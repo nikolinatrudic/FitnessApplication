@@ -25,6 +25,7 @@ public class StartPageFragment extends Fragment {
     private Button loginButton;
     private Button signupButton;
     private ImageView picture;
+    private Button profileButton;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -46,6 +47,7 @@ public class StartPageFragment extends Fragment {
         if(LoggedInUser.getInstance().getUser() == null) {
             loginButton = (Button) view.findViewById(R.id.loginButton);
             signupButton = (Button) view.findViewById(R.id.signupButton);
+            profileButton = (Button) view.findViewById(R.id.buttonProfile);
 
             signupButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,6 +69,18 @@ public class StartPageFragment extends Fragment {
 
                     LoginFragment loginFragment = new LoginFragment();
                     fragmentTransaction.replace(R.id.frameLayout, loginFragment);
+                    fragmentTransaction.commit();
+                }
+            });
+
+            profileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    ProfileFragment profileFragment = new ProfileFragment();
+                    fragmentTransaction.replace(R.id.frameLayout, profileFragment);
                     fragmentTransaction.commit();
                 }
             });

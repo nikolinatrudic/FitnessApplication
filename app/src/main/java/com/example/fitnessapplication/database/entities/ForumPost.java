@@ -1,4 +1,4 @@
-package com.example.fitnessapp.database.entities;
+package com.example.fitnessapplication.database.entities;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
