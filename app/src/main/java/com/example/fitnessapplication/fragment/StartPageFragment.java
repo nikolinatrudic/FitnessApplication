@@ -44,12 +44,12 @@ public class StartPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_start_page, container, false);
         FrameLayout fl = view.findViewById(R.id.frameLayout);
 
-        if(LoggedInUser.getInstance().getUser() == null) {
-            loginButton = (Button) view.findViewById(R.id.loginButton);
-            signupButton = (Button) view.findViewById(R.id.signupButton);
-            profileButton = (Button) view.findViewById(R.id.buttonProfile);
 
-            signupButton.setOnClickListener(new View.OnClickListener() {
+        loginButton = (Button) view.findViewById(R.id.loginButton);
+        signupButton = (Button) view.findViewById(R.id.signupButton);
+        profileButton = (Button) view.findViewById(R.id.buttonProfile);
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -57,11 +57,10 @@ public class StartPageFragment extends Fragment {
 
                     SignupFragment signupFragment = new SignupFragment();
                     fragmentTransaction.replace(R.id.frameLayout, signupFragment);
-                    fragmentTransaction.commit();
-                }
-            });
+                    fragmentTransaction.commit(); }
+        });
 
-            loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -71,9 +70,9 @@ public class StartPageFragment extends Fragment {
                     fragmentTransaction.replace(R.id.frameLayout, loginFragment);
                     fragmentTransaction.commit();
                 }
-            });
+        });
 
-            profileButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -85,21 +84,13 @@ public class StartPageFragment extends Fragment {
                 }
             });
 
-            picture = (ImageView) view.findViewById(R.id.imageViewLogo);
-            picture.setOnClickListener(new View.OnClickListener() {
+        picture = (ImageView) view.findViewById(R.id.imageViewLogo);
+        picture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //ovde da se prebaci na obican step counter
                 }
-            });
-        } else{
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            StepCounterFragment signupFragment = new StepCounterFragment();
-            fragmentTransaction.replace(R.id.frameLayout, signupFragment);
-            fragmentTransaction.commit();
-        }
+        });
 
         return view;
     }
