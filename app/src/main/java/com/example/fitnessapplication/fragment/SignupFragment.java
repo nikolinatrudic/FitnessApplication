@@ -106,7 +106,7 @@ public class SignupFragment extends Fragment {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     StepCounterFragment usp = new StepCounterFragment();
-                    fragmentTransaction.replace(R.id.frameLayout, usp);
+                    fragmentTransaction.replace(R.id.fragment_container, usp);
                     fragmentTransaction.commit();
                 }
             }
