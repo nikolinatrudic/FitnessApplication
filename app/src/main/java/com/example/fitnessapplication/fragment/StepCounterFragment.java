@@ -186,6 +186,12 @@ public class StepCounterFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         LoggedInUser.getInstance().setUser(null);
+
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("logged_in_user_username", null);
+        editor.apply();
+
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
