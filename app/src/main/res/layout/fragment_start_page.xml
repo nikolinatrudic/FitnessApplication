@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.StartPageFragment"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:theme="@style/AppTheme.NoActionBar">
 
     <ImageView
         android:id="@+id/imageViewLogo"

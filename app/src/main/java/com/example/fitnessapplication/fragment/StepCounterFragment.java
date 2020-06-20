@@ -29,11 +29,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.fitnessapplication.AlarmReceiver;
+import com.example.fitnessapplication.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.singleton.LoggedInUser;
+import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -66,9 +72,22 @@ public class StepCounterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        NavigationView nav = getActivity().findViewById(R.id.nav_view);
+        //nav.setVisibility(View.VISIBLE);*/
+
+        ((DrawerLocker) getActivity()).setDrawerEnabled(true);
+
+        View header_view = (View) nav.getHeaderView(0);
+
+        TextView text_username = (TextView) header_view.findViewById(R.id.text_username);
+        text_username.setText(LoggedInUser.getInstance().getUser().getUsername());
+
+        TextView text_email = (TextView) header_view.findViewById(R.id.text_email);
+        text_email.setText(LoggedInUser.getInstance().getUser().getEmail());
 
         alarmManager = stepAlarmManager();
         stepDetector = new SensorEventListener() {
@@ -176,7 +195,7 @@ public class StepCounterFragment extends Fragment {
 
 
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu, menu);
 
@@ -196,9 +215,9 @@ public class StepCounterFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         StartPageFragment startPageFragment = new StartPageFragment();
-        fragmentTransaction.replace(R.id.frameLayout, startPageFragment);
+        fragmentTransaction.replace(R.id.fragment_container, startPageFragment);
         fragmentTransaction.commit();
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

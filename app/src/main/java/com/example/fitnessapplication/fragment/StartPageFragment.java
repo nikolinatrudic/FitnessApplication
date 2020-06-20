@@ -16,16 +16,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import androidx.appcompat.widget.Toolbar;
 
+import com.example.fitnessapplication.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.singleton.LoggedInUser;
+import com.google.android.material.navigation.NavigationView;
 
 public class StartPageFragment extends Fragment {
 
     private Button loginButton;
     private Button signupButton;
     private ImageView picture;
-    private Button profileButton;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -35,6 +37,7 @@ public class StartPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setHasOptionsMenu(false);
     }
 
     @Override
@@ -42,12 +45,18 @@ public class StartPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_start_page, container, false);
-        FrameLayout fl = view.findViewById(R.id.frameLayout);
+        FrameLayout fl = view.findViewById(R.id.fragment_container);
+
+        /*NavigationView nav = getActivity().findViewById(R.id.nav_view);
+        if(nav.getVisibility() != View.GONE){
+            nav.setVisibility(View.GONE);
+        }*/
+
+        ((DrawerLocker) getActivity()).setDrawerEnabled(false);
 
 
         loginButton = (Button) view.findViewById(R.id.loginButton);
         signupButton = (Button) view.findViewById(R.id.signupButton);
-        profileButton = (Button) view.findViewById(R.id.buttonProfile);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,7 +65,7 @@ public class StartPageFragment extends Fragment {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     SignupFragment signupFragment = new SignupFragment();
-                    fragmentTransaction.replace(R.id.frameLayout, signupFragment);
+                    fragmentTransaction.replace(R.id.fragment_container, signupFragment);
                     fragmentTransaction.commit(); }
         });
 
@@ -67,22 +76,10 @@ public class StartPageFragment extends Fragment {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     LoginFragment loginFragment = new LoginFragment();
-                    fragmentTransaction.replace(R.id.frameLayout, loginFragment);
+                    fragmentTransaction.replace(R.id.fragment_container, loginFragment);
                     fragmentTransaction.commit();
                 }
         });
-
-        profileButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    ProfileFragment profileFragment = new ProfileFragment();
-                    fragmentTransaction.replace(R.id.frameLayout, profileFragment);
-                    fragmentTransaction.commit();
-                }
-            });
 
         picture = (ImageView) view.findViewById(R.id.imageViewLogo);
         picture.setOnClickListener(new View.OnClickListener() {

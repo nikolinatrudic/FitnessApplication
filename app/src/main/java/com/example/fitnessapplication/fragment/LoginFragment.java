@@ -72,7 +72,7 @@ public class LoginFragment extends Fragment {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     StepCounterFragment usp = new StepCounterFragment();
-                    fragmentTransaction.replace(R.id.frameLayout, usp);
+                    fragmentTransaction.replace(R.id.fragment_container, usp);
                     fragmentTransaction.commit();
                 } else {
                     if (user1 == null)
