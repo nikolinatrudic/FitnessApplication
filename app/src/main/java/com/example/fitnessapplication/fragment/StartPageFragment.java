@@ -21,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.fitnessapplication.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.singleton.LoggedInUser;
-import com.google.android.material.navigation.NavigationView;
 
 public class StartPageFragment extends Fragment {
 
