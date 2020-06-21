@@ -5,4 +5,13 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="edit_profile">EDIT PROFILE</string>
+    <string name="username">Username:</string>
+    <string name="email">Email:</string>
+    <string name="height">Height:</string>
+    <string name="weight">Weight:</string>
+    <string name="update">UPDATE</string>
+    <string name="name">Name</string>
+    <string name="jone_doe">jone doe</string>
+    <string name="password">Password:</string>
 </resources>
