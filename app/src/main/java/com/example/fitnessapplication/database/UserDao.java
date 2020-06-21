@@ -14,4 +14,21 @@ public interface UserDao {
 
     @Query("SELECT * from user u WHERE u.username like :username1")
     User getUser(String username1);
+
+    @Query("UPDATE user SET username = :newUserName WHERE id = :idUser")
+    void updateUsername(long idUser, String newUserName);
+
+    @Query("UPDATE user SET email = :newUserEmail WHERE id = :idUser")
+    void updateEmail(long idUser, String newUserEmail);
+
+    @Query("UPDATE user SET password = :newUserPassword WHERE id = :idUser")
+    void updatePassword(long idUser, String newUserPassword);
+
+    @Query("UPDATE user SET height = :newUserHeight WHERE id = :idUser")
+    void updateHeight(long idUser, Integer newUserHeight);
+
+    @Query("UPDATE user SET weight = :newUserWeight WHERE id = :idUser")
+    void updateWeight(long idUser, Integer newUserWeight);
+
+
 }

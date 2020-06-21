@@ -84,7 +84,7 @@ public class StepCounterFragment extends Fragment {
         View header_view = (View) nav.getHeaderView(0);
 
         TextView text_username = (TextView) header_view.findViewById(R.id.text_username);
-        text_username.setText(LoggedInUser.getInstance().getUser().getUsername());
+        text_username.setText(LoggedInUser.getInstance().getUser().getUsername()); // Ovde username bude null kad se menja u edit profile, problem!
 
         TextView text_email = (TextView) header_view.findViewById(R.id.text_email);
         text_email.setText(LoggedInUser.getInstance().getUser().getEmail());
