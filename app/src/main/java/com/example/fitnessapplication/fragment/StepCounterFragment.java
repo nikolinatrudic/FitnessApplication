@@ -52,6 +52,11 @@ public class StepCounterFragment extends Fragment {
     public static TextView stepsNumber;
     private Button mapsButton;
     private Button statsButton;
+    private Button skiBtn;
+    private Button hikeBtn;
+    private Button runBtn;
+    private Button bordBtn;
+
     private ProgressBar progressBar;
 
     private AlarmManager alarmManager;
@@ -154,10 +159,48 @@ public class StepCounterFragment extends Fragment {
         progressBar.setProgress(calculateProgress(stepCount));
         stepsNumber.setText(stepCount.toString());
 
-        
+
+
+        skiBtn = (Button) view.findViewById(R.id.skibtn);
+        skiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSport("ski");
+            }
+        });
+        hikeBtn =(Button) view.findViewById(R.id.hikebtn);
+        hikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSport("hike");
+            }
+        });
+        runBtn = (Button) view.findViewById(R.id.runbtn);
+        runBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSport("run");
+            }
+        });
+        bordBtn= (Button) view.findViewById(R.id.bordbtn);
+        bordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSport("bord");
+            }
+        });
         return view;
     }
+    private void openSport(String sport){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        SportPage sportPageFragmet = new SportPage();
+        sportPageFragmet.setSport(sport);
+        fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onResume() {
