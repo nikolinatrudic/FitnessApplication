@@ -41,6 +41,7 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
+
         fdb = FitnessDatabase.getInstance(getContext());
 
         editTextEmail = view.findViewById(R.id.plainTextEmail);

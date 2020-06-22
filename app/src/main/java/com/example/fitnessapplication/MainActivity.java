@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ProfileFragment profileFragment = new ProfileFragment();
         fragmentTransaction.replace(R.id.fragment_container, profileFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 }
