@@ -154,6 +154,7 @@ public class StepCounterFragment extends Fragment {
         progressBar.setProgress(calculateProgress(stepCount));
         stepsNumber.setText(stepCount.toString());
 
+        
         return view;
     }
 
