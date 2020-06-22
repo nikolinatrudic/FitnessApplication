@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        StepCounterFragment stepCounterFragment = new StepCounterFragment();
+        StepCounterFragment stepCounterFragment = new StepCounterFragment.Builder().setType("user").build();
         fragmentTransaction.replace(R.id.fragment_container, stepCounterFragment);
         fragmentTransaction.commit();
     }

@@ -11,7 +11,7 @@ import com.example.fitnessapplication.database.entities.User;
 @Database(entities = {User.class}, exportSchema = false, version = 1)
 public abstract class FitnessDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "fitness_db_test";
+    private static final String DB_NAME = "fitness_db_test1";
     private static FitnessDatabase instance;
 
     public static synchronized FitnessDatabase getInstance(Context context){

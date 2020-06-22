@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,8 +51,10 @@ import static android.content.Context.MODE_PRIVATE;
 public class StepCounterFragment extends Fragment {
 
     public static TextView stepsNumber;
-    private Button mapsButton;
-    private Button statsButton;
+    private TextView text33;
+    private TextView text_username;
+    private TextView text_email;
+
     private Button skiBtn;
     private Button hikeBtn;
     private Button runBtn;
@@ -67,6 +70,11 @@ public class StepCounterFragment extends Fragment {
     public static Integer stepCount = 0;
 
     private SensorEventListener stepDetector;
+    private HorizontalScrollView horizontalScrollView;
+
+    private DrawerLocker dl;
+
+    private String type;
 
 
     private static final int RQ_SYNC_SERVICE = 1101;
@@ -75,26 +83,34 @@ public class StepCounterFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static class Builder {
+        private final Bundle bundle;
+
+        public Builder() {
+            bundle = new Bundle();
+        }
+
+        public Builder setType(String type) {
+            bundle.putString("type", type);
+            return this;
+        }
+
+        public StepCounterFragment build() {
+            StepCounterFragment fragment = new StepCounterFragment();
+            fragment.setArguments(bundle);
+
+            return fragment;
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(true);
+
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        NavigationView nav = getActivity().findViewById(R.id.nav_view);
-        //nav.setVisibility(View.VISIBLE);*/
-
-        ((DrawerLocker) getActivity()).setDrawerEnabled(true);
-
-        View header_view = (View) nav.getHeaderView(0);
-
-        TextView text_username = (TextView) header_view.findViewById(R.id.text_username);
-        text_username.setText(LoggedInUser.getInstance().getUser().getUsername()); // Ovde username bude null kad se menja u edit profile, problem!
-
-        TextView text_email = (TextView) header_view.findViewById(R.id.text_email);
-        text_email.setText(LoggedInUser.getInstance().getUser().getEmail());
 
         alarmManager = stepAlarmManager();
         stepDetector = new SensorEventListener() {
@@ -151,6 +167,15 @@ public class StepCounterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
+        type = getArguments().getString("type");
+        
+        dl =  (DrawerLocker) getActivity();
+        NavigationView nav = getActivity().findViewById(R.id.nav_view);
+
+        View header_view = (View) nav.getHeaderView(0);
+
+        text_username = (TextView) header_view.findViewById(R.id.text_username);// Ovde username bude null kad se menja u edit profile, problem!
+        text_email = (TextView) header_view.findViewById(R.id.text_email);
 
         stepsNumber = (TextView) view.findViewById(R.id.stepsNumber);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -159,7 +184,9 @@ public class StepCounterFragment extends Fragment {
         progressBar.setProgress(calculateProgress(stepCount));
         stepsNumber.setText(stepCount.toString());
 
+        text33 = view.findViewById(R.id.text33);
 
+        horizontalScrollView = view.findViewById(R.id.horizontalScrollView);
 
         skiBtn = (Button) view.findViewById(R.id.skibtn);
         skiBtn.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +216,19 @@ public class StepCounterFragment extends Fragment {
                 openSport("bord");
             }
         });
+
+        dl.setDrawerEnabled(type.equals("guest") ? false  : true);
+        text33.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+        horizontalScrollView.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+        skiBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+        hikeBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+        runBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+        bordBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+
+        if(type.equals("user")) {
+            text_username.setText(LoggedInUser.getInstance().getUser().getUsername());
+            text_email.setText(LoggedInUser.getInstance().getUser().getEmail());
+        }
         return view;
     }
     private void openSport(String sport){

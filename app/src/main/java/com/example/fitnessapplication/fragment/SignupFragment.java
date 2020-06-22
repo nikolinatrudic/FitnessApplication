@@ -97,7 +97,7 @@ public class SignupFragment extends Fragment {
                     int weight1 = Integer.parseInt(weight.getText().toString());
                     String gender1 = gender.getSelectedItem().toString();
 
-                    User user = UserFactory.getUser(username1, email1, password1, height1, weight1, gender1);
+                    User user = UserFactory.getUser(username1, email1, password1, height1, weight1, gender1, "n");
                     fdb.userDao().insertUser(user);
 
                     LoggedInUser.getInstance().setUser(user); // ovo je singleton pattern, znaci imamo samo jednog ulogovanog korisnika
@@ -105,7 +105,7 @@ public class SignupFragment extends Fragment {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                    StepCounterFragment usp = new StepCounterFragment();
+                    StepCounterFragment usp = new StepCounterFragment.Builder().setType("user").build();
                     fragmentTransaction.replace(R.id.fragment_container, usp);
                     fragmentTransaction.commit();
                 }

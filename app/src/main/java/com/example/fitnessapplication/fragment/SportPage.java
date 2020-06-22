@@ -3,6 +3,8 @@ package com.example.fitnessapplication.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +57,20 @@ public class SportPage extends Fragment {
         kmTxt.setText("0");
         caloriesTxt.setText("0");
         avgSpeedTxt.setText("0");
+
+        startWorkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapsFragment mapsFragment = new MapsFragment();
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.replace(R.id.fragment_container, mapsFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         return view;
     }

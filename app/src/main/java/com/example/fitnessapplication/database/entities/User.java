@@ -28,13 +28,17 @@ public class User {
     @ColumnInfo(name = "gender")
     private String gender;
 
-    public User(String username, String email, String password, int height, int weight, String gender) {
+    @ColumnInfo(name = "admin")
+    private String admin;
+
+    public User(String username, String email, String password, int height, int weight, String gender, String admin) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.height = height;
         this.weight = weight;
         this.gender = gender;
+        this.admin = admin;
     }
 
     public int getId() {
@@ -91,5 +95,13 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 }

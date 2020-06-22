@@ -84,7 +84,14 @@ public class StartPageFragment extends Fragment {
         picture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //ovde da se prebaci na obican step counter
+                    StepCounterFragment startPageFragment = new StepCounterFragment.Builder().setType("guest").build();
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    fragmentTransaction.replace(R.id.fragment_container, startPageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
         });
 
