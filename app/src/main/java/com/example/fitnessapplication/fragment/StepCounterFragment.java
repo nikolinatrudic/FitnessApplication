@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -51,6 +52,7 @@ public class StepCounterFragment extends Fragment {
     public static TextView stepsNumber;
     private Button mapsButton;
     private Button statsButton;
+    private ProgressBar progressBar;
 
     private AlarmManager alarmManager;
     private SensorManager sensorManager;
@@ -107,6 +109,7 @@ public class StepCounterFragment extends Fragment {
                         stepCount++;
                     }
                     stepsNumber.setText(stepCount.toString());
+                    progressBar.setProgress(calculateProgress(stepCount));
                 }
             }
 
@@ -145,9 +148,10 @@ public class StepCounterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
 
         stepsNumber = (TextView) view.findViewById(R.id.stepsNumber);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         stepCount = sharedPreferences.getInt("stepCount", 0);
+        progressBar.setProgress(calculateProgress(stepCount));
         stepsNumber.setText(stepCount.toString());
 
         return view;
@@ -161,7 +165,9 @@ public class StepCounterFragment extends Fragment {
         /*SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         stepCount = sharedPreferences.getInt("stepCount", 0);*/
     }
-
+    private int calculateProgress(int steps){
+        return steps/60;
+    }
     @Override
     public void onStop() {
         super.onStop();
