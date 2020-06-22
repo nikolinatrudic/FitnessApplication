@@ -1,27 +1,23 @@
 package com.example.fitnessapplication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.fragment.ProfileFragment;
@@ -119,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.home:
-                //vrati na home page
+                home();
                 break;
             case R.id.profile:
                 profile();
@@ -134,6 +130,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void home() {
+        if(!getPreferences(MODE_PRIVATE).getString("logged_in_user_username","").equals("")){
+            LoggedInUser.getInstance().setUser(FitnessDatabase.getInstance(getApplicationContext()).userDao().getUser(getPreferences(MODE_PRIVATE).getString("logged_in_user_username","")));
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        StepCounterFragment stepCounterFragment = new StepCounterFragment();
+        fragmentTransaction.replace(R.id.fragment_container, stepCounterFragment);
+        fragmentTransaction.commit();
     }
 
     private void logOut(){
