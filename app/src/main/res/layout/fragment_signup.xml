@@ -134,7 +134,7 @@
         android:layout_width="233dp"
         android:layout_height="69dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/lila"
+        android:background="@drawable/rounded_shape"
         android:text="CREATE ACCOUNT"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
