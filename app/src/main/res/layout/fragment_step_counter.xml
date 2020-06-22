@@ -32,4 +32,96 @@
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
+    <TextView
+        android:id="@+id/text33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Choose a sport to start your workout:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text33">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/skibtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:foreground="@drawable/ski" />
+
+            <Button
+                android:id="@+id/hikebtn"
+                android:layout_width="69dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:foreground="@drawable/climb"
+                android:shadowColor="#000C0A0A" />
+
+            <Button
+                android:id="@+id/runbtn"
+                android:layout_width="59dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:foreground="@drawable/run"
+                android:shadowColor="#000C0A0A" />
+
+            <Button
+                android:id="@+id/bordbtn"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:foreground="@drawable/skate"
+                android:shadowColor="#000C0A0A" />
+
+            <Button
+                android:id="@+id/sportbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:foreground="@drawable/ski"
+                android:shadowColor="#000C0A0A" />
+
+            <Button
+                android:id="@+id/sport2btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:foreground="@drawable/cycl"
+                android:shadowColor="#000C0A0A" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
