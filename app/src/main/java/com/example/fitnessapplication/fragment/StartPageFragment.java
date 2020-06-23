@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.example.fitnessapplication.DrawerLocker;
+import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 
 public class StartPageFragment extends Fragment {

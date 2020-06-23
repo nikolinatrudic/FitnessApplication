@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.entities.User;
-import com.example.fitnessapplication.proxy.ProxyImage;
+import com.example.fitnessapplication.imagesproxy.ProxyImage;
 import com.example.fitnessapplication.database.LoggedInUser;
 
 public class ProfileFragment extends Fragment {

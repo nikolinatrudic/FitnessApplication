@@ -19,7 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.fitnessapplication.DrawerLocker;
+import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.fragment.ProfileFragment;

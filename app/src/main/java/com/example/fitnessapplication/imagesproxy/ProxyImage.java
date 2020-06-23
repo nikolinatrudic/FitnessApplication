@@ -1,4 +1,4 @@
-package com.example.fitnessapplication.proxy;
+package com.example.fitnessapplication.imagesproxy;
 
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;

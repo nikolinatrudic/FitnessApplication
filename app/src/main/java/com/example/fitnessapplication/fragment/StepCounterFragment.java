@@ -26,7 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.fitnessapplication.database.AlarmReceiver;
-import com.example.fitnessapplication.DrawerLocker;
+import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.LoggedInUser;
 import com.google.android.material.navigation.NavigationView;
