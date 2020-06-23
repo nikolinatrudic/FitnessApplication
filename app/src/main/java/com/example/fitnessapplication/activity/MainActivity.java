@@ -1,4 +1,4 @@
-package com.example.fitnessapplication;
+package com.example.fitnessapplication.activity;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -19,15 +19,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.fitnessapplication.DrawerLocker;
+import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.fragment.ProfileFragment;
 import com.example.fitnessapplication.fragment.StartPageFragment;
 import com.example.fitnessapplication.fragment.StepCounterFragment;
-import com.example.fitnessapplication.singleton.LoggedInUser;
+import com.example.fitnessapplication.database.LoggedInUser;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
-
     FrameLayout frameLayout;
     private StartPageFragment spf;
     private DrawerLayout drawerLayout;

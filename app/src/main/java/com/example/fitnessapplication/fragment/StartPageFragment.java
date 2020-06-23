@@ -2,25 +2,19 @@ package com.example.fitnessapplication.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.fitnessapplication.DrawerLocker;
 import com.example.fitnessapplication.R;
-import com.example.fitnessapplication.singleton.LoggedInUser;
 
 public class StartPageFragment extends Fragment {
 

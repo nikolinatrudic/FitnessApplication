@@ -1,7 +1,6 @@
 package com.example.fitnessapplication.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.entities.User;
-import com.example.fitnessapplication.singleton.LoggedInUser;
+import com.example.fitnessapplication.database.LoggedInUser;
 
 public class EditProfileFragment extends Fragment {
 

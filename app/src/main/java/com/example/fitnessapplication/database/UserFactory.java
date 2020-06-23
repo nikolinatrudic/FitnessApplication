@@ -1,4 +1,4 @@
-package com.example.fitnessapplication.factory;
+package com.example.fitnessapplication.database;
 
 import com.example.fitnessapplication.database.entities.User;
 

@@ -1,4 +1,4 @@
-package com.example.fitnessapplication;
+package com.example.fitnessapplication.database;
 
 
 import android.content.BroadcastReceiver;

@@ -6,6 +6,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.Database;
 
+import com.example.fitnessapplication.database.dao.UserDao;
 import com.example.fitnessapplication.database.entities.User;
 
 @Database(entities = {User.class}, exportSchema = false, version = 1)

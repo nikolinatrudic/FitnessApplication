@@ -1,4 +1,4 @@
-package com.example.fitnessapplication.singleton;
+package com.example.fitnessapplication.database;
 
 import com.example.fitnessapplication.database.entities.User;
 

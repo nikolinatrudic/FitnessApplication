@@ -1,8 +1,6 @@
 package com.example.fitnessapplication.fragment;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.proxy.ProxyImage;
-import com.example.fitnessapplication.proxy.RealImage;
-import com.example.fitnessapplication.singleton.LoggedInUser;
-
-import org.w3c.dom.Text;
+import com.example.fitnessapplication.database.LoggedInUser;
 
 public class ProfileFragment extends Fragment {
 

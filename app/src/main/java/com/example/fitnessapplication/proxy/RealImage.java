@@ -4,9 +4,6 @@ package com.example.fitnessapplication.proxy;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.example.fitnessapplication.MainActivity;
-import com.example.fitnessapplication.R;
-
 public class RealImage implements Image {
 
     private Drawable imagePathMan; // path to the drawable

@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.entities.User;
-import com.example.fitnessapplication.factory.UserFactory;
-import com.example.fitnessapplication.singleton.LoggedInUser;
+import com.example.fitnessapplication.database.UserFactory;
+import com.example.fitnessapplication.database.LoggedInUser;
 
 public class SignupFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.fitnessapplication.database;
+package com.example.fitnessapplication.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
