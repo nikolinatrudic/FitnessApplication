@@ -212,6 +212,7 @@ public class StepCounterFragment extends Fragment {
                 //SportDao sportDao= FitnessDatabase.getInstance(getContext()).sportDao();
                 Log.d("Sport name",sportRun.getName());
                 sportPageFragmet.setSport(sportRun);
+                sportPageFragmet.setForum(forumRun);
                 fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

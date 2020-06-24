@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.fitnessapplication.R;
+import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Post;
 import com.example.fitnessapplication.database.entities.Sport;
@@ -44,14 +45,17 @@ public class AddPostFragment extends Fragment {
         buttonPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Post newPost = new Post();
+                Post newPost = new Post();
                 newPost.setUserId(user.getId());
                 newPost.setForumId(forum.getForumId());
                 newPost.setText(textArea.getText().toString());
-                newPost.setHeading(editTextHeading.getText().toString());*/
+                newPost.setHeading(editTextHeading.getText().toString());
+                FitnessDatabase.getInstance(getContext()).postDao().insertPost(newPost);
 
             }
         });
+
+
 
         return view;
     }

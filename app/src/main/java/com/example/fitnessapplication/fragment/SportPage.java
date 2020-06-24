@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fitnessapplication.R;
+import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 
 import org.w3c.dom.Text;
@@ -30,6 +31,7 @@ public class SportPage extends Fragment {
     private Button forumBtn;
 
     private Sport sport;
+    private Forum forum;
     public SportPage() {
         // Required empty public constructor
     }
@@ -38,6 +40,13 @@ public class SportPage extends Fragment {
             this.sport = sport;
         }
     }
+
+    public void setForum(Forum forum) {
+        if (forum != null) {
+            this.forum = forum;
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +98,7 @@ public class SportPage extends Fragment {
 
                 ForumFragment forumFragment = new ForumFragment();
                 forumFragment.setSport(sport);
+                forumFragment.setForum(forum);
                 fragmentTransaction.replace(R.id.fragment_container, forumFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
