@@ -105,7 +105,7 @@ public class SignupFragment extends Fragment {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                    StepCounterFragment usp = new StepCounterFragment.Builder().setType("user").build();
+                    StepCounterFragment usp = new StepCounterFragment("user");
                     fragmentTransaction.replace(R.id.fragment_container, usp);
                     fragmentTransaction.commit();
                 }

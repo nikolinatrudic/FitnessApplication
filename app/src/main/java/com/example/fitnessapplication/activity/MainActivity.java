@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     private SportDao sportDao;
-
+//todo: add in nav bar forums (click on the forum and lead to the other page where user can choose from forums)
+    //todo: make forum page
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        StepCounterFragment stepCounterFragment = new StepCounterFragment.Builder().setType("user").build();
+        StepCounterFragment stepCounterFragment = new StepCounterFragment("user");
+
         fragmentTransaction.replace(R.id.fragment_container, stepCounterFragment);
         fragmentTransaction.commit();
     }
@@ -168,7 +170,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } */
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("logged_in_user_username", LoggedInUser.getInstance().getUser().getUsername());
+        editor.apply();
         ForumFragment forumFragment = new ForumFragment();
         fragmentTransaction.replace(R.id.fragment_container, forumFragment);
         fragmentTransaction.addToBackStack(null);

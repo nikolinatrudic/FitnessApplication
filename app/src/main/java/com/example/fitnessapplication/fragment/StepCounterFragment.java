@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -66,40 +69,23 @@ public class StepCounterFragment extends Fragment {
 
     private DrawerLocker dl;
 
-    private String type;
-
+    private String user;
+    private  SharedPreferences sharedPreferences;
 
     private static final int RQ_SYNC_SERVICE = 1101;
 
     public StepCounterFragment() {
         // Required empty public constructor
     }
-
-    public static class Builder {
-        private final Bundle bundle;
-
-        public Builder() {
-            bundle = new Bundle();
-        }
-
-        public Builder setType(String type) {
-            bundle.putString("type", type);
-            return this;
-        }
-
-        public StepCounterFragment build() {
-            StepCounterFragment fragment = new StepCounterFragment();
-            fragment.setArguments(bundle);
-
-            return fragment;
-        }
+    public StepCounterFragment(String type){
+        this.user = type;
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(true);
+
 
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -159,14 +145,14 @@ public class StepCounterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
-        if(getArguments()!=null){
-            type = getArguments().getString("type");
-        }
-        else{
-            type="user";
-        }
 
-        
+       // type = getArguments().getString("type");
+        //todo: for user to stay logged in
+        sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("user", user);
+        editor.apply();
+
         dl =  (DrawerLocker) getActivity();
         NavigationView nav = getActivity().findViewById(R.id.nav_view);
 
@@ -177,7 +163,8 @@ public class StepCounterFragment extends Fragment {
 
         stepsNumber = (TextView) view.findViewById(R.id.stepsNumber);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+
+       // sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         stepCount = sharedPreferences.getInt("stepCount", 0);
         progressBar.setProgress(calculateProgress(stepCount));
         stepsNumber.setText(stepCount.toString());
@@ -230,7 +217,9 @@ public class StepCounterFragment extends Fragment {
                 openSport("Skate");
             }
         });
-
+        //todo:dodaj u logged in user njegov username,
+        String type = sharedPreferences.getString("logged_in_user_username","guest");
+        Log.e("MSF",type);
         dl.setDrawerEnabled(type.equals("guest") ? false  : true);
         text33.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         horizontalScrollView.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);

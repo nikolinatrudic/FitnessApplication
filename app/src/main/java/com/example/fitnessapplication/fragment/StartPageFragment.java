@@ -82,7 +82,7 @@ public class StartPageFragment extends Fragment {
         picture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    StepCounterFragment startPageFragment = new StepCounterFragment.Builder().setType("guest").build();
+                    StepCounterFragment startPageFragment = new StepCounterFragment("guest");
 
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

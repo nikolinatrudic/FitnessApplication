@@ -1,5 +1,6 @@
 package com.example.fitnessapplication.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,8 @@ import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.database.LoggedInUser;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class LoginFragment extends Fragment {
@@ -71,7 +74,12 @@ public class LoginFragment extends Fragment {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                    StepCounterFragment usp = new StepCounterFragment.Builder().setType("user").build();
+                    SharedPreferences   sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("logged_in_user_username", LoggedInUser.getInstance().getUser().getUsername());
+                    editor.apply();
+
+                    StepCounterFragment usp = new StepCounterFragment("user");
                     fragmentTransaction.replace(R.id.fragment_container, usp);
                     fragmentTransaction.commit();
                 } else {
