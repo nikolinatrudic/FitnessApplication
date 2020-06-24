@@ -48,7 +48,7 @@ public class SportPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sport_page, container, false);
-        //todo: this buttons need on click listener
+
         forumBtn = (Button) view.findViewById(R.id.forumBtn);
         startWorkoutBtn = (Button) view.findViewById(R.id.startWorkoutBtn);
 
@@ -88,6 +88,7 @@ public class SportPage extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 ForumFragment forumFragment = new ForumFragment();
+                forumFragment.setSport(sport);
                 fragmentTransaction.replace(R.id.fragment_container, forumFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

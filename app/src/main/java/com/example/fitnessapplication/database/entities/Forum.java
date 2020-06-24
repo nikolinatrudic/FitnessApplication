@@ -12,8 +12,7 @@ public class Forum {
     @ColumnInfo(name = "name")
     private String name;
 
-    public Forum(int forumId, String name) {
-        this.forumId = forumId;
+    public Forum(String name) {
         this.name = name;
     }
 

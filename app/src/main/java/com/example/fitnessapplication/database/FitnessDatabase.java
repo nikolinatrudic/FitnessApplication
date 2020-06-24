@@ -6,6 +6,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.Database;
 
+import com.example.fitnessapplication.database.dao.ForumDao;
 import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.dao.UserDao;
 import com.example.fitnessapplication.database.dao.WorkoutDao;
@@ -32,4 +33,5 @@ public abstract class FitnessDatabase extends RoomDatabase {
     public abstract WorkoutDao workoutDao();
     public abstract SportDao sportDao();
     public abstract UserDao userDao();
+    public abstract ForumDao forumDao();
 }

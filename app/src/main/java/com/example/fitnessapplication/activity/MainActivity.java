@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 profile();
                 break;
             case R.id.forum:
-                forum();
+              //  forum();
                 break;
             case R.id.log_out:
                 logOut();

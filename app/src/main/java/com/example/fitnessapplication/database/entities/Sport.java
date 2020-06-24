@@ -10,7 +10,7 @@ public class Sport {
     @PrimaryKey(autoGenerate = true)
     private int sportId;
 
-    public Sport( String name, int caloriesPerKm) {
+    public Sport(String name, int caloriesPerKm) {
         this.name = name;
         this.caloriesPerKm = caloriesPerKm;
     }

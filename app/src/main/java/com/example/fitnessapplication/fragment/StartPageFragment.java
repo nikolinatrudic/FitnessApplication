@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.fitnessapplication.database.FitnessDatabase;
+import com.example.fitnessapplication.database.entities.Forum;
+import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 
