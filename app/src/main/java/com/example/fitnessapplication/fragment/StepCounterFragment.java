@@ -159,8 +159,13 @@ public class StepCounterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
+        if(getArguments()!=null){
+            type = getArguments().getString("type");
+        }
+        else{
+            type="user";
+        }
 
-//        type = getArguments().getString("type");
         
         dl =  (DrawerLocker) getActivity();
         NavigationView nav = getActivity().findViewById(R.id.nav_view);
@@ -205,17 +210,6 @@ public class StepCounterFragment extends Fragment {
                 sportRun.setForumId(forumRun.getForumId());
                 FitnessDatabase.getInstance(getContext()).sportDao().insertSport(sportRun);
                // openSport("Run");
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                SportPage sportPageFragmet = new SportPage();
-                //SportDao sportDao= FitnessDatabase.getInstance(getContext()).sportDao();
-                Log.d("Sport name",sportRun.getName());
-                sportPageFragmet.setSport(sportRun);
-                sportPageFragmet.setForum(forumRun);
-                fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
         });
         bordBtn= (Button) view.findViewById(R.id.bordbtn);
@@ -226,20 +220,18 @@ public class StepCounterFragment extends Fragment {
             }
         });
 
-    /*    dl.setDrawerEnabled(type.equals("guest") ? false  : true);
+        dl.setDrawerEnabled(type.equals("guest") ? false  : true);
         text33.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         horizontalScrollView.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         skiBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         hikeBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         runBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
-        bordBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE); */
+        bordBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
 
-     //   if(type.equals("user")) {
-        if (LoggedInUser.getInstance().getUser() != null) {
+       if(type.equals("user")) {
             text_username.setText(LoggedInUser.getInstance().getUser().getUsername());
             text_email.setText(LoggedInUser.getInstance().getUser().getEmail());
         }
-    //    }
         return view;
     }
     // SPORT FRAGMENT

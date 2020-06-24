@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.util.Log;
@@ -159,11 +160,19 @@ public class ProfileFragment extends Fragment {
     }
 
     public void openFile(Uri uri){
-        //todo:won't open file
-        Intent intent = new Intent(Intent.ACTION_EDIT);
-      //  intent.setData(uri);
-        intent.setDataAndType(uri, "text/plain");
-        startActivity(intent);
+                File f;
+                f = new File(uri.getPath());
+                if(f.exists()) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                    //intent.setData(uri);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+                    Toast.makeText(getActivity(), "Saved your text at " + uri, Toast.LENGTH_LONG).show();
+                    intent.setDataAndType(uri, "text/plain");
+                   // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
+
     }
 
 }
