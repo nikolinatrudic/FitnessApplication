@@ -1,5 +1,8 @@
 package com.example.fitnessapplication.fragment;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,6 +26,9 @@ import com.example.fitnessapplication.imagesproxy.ProxyImage;
 import com.example.fitnessapplication.database.LoggedInUser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -36,6 +43,8 @@ public class ProfileFragment extends Fragment {
     private TextView textViewWeight;
     private Button buttonEdit;
     private Button generateStats;
+
+    private static final int STORAGE_PERMISSION_CODE = 101;
 
     public ProfileFragment() {
     }
@@ -90,13 +99,59 @@ public class ProfileFragment extends Fragment {
         generateStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+
+                    return;
+                }
                 generateStatistics();
             }
         });
         return view;
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions, grantResults);
 
-    private void generateStatistics() {
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                generateStatistics();
+            }
+            else {
+                Toast.makeText(getActivity(),"Storage Permission Denied",   Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public void generateStatistics() {
+        //String text = mEditText.getText().toString();
+        String text = "OVO JE PROBA";
+        FileOutputStream fos = null;
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String fileName = timeStamp+".txt";
+            fos = getActivity().openFileOutput(fileName, Context.MODE_PRIVATE);
+            fos.write(text.getBytes());
+            //mEditText.getText().clear();
+            Toast.makeText(getActivity(), "Saved to " + getActivity().getFilesDir() + "/" + fileName,
+                    Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    private void generateStatistics2() {
         String text = "OVO JE PROBA";
         try {
 
