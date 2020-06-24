@@ -26,7 +26,8 @@ public class Post {
         this.text = text;
         this.heading = heading;
     }
-
+    public Post(){
+    }
     public int getPostId() {
         return postId;
     }

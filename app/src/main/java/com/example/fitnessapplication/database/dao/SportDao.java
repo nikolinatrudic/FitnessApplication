@@ -6,6 +6,8 @@ import androidx.room.Query;
 
 import com.example.fitnessapplication.database.entities.Sport;
 
+import java.util.List;
+
 @Dao
 public interface SportDao {
 
@@ -13,7 +15,9 @@ public interface SportDao {
     void insertSport(Sport sport);
 
     @Query("SELECT * from sport s WHERE s.name like :name1")
-    Sport getSport(String name1);
+    Sport findSport(String name1);
+    @Query("SELECT * from sport s")
+    List<Sport> getSports();
 
     @Query("UPDATE sport SET forumId= :forumId WHERE sportId = :idSport")
     void updateForum(long idSport, Integer forumId);

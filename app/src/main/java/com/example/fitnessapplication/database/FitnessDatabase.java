@@ -6,10 +6,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.Database;
 
+import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.dao.UserDao;
+import com.example.fitnessapplication.database.dao.WorkoutDao;
+import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.database.entities.User;
+import com.example.fitnessapplication.database.entities.Workout;
 
-@Database(entities = {User.class}, exportSchema = false, version = 1)
+@Database(entities = {User.class, Workout.class, Sport.class}, exportSchema = false, version = 1)
 public abstract class FitnessDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "fitness_db_test1";
@@ -25,6 +29,7 @@ public abstract class FitnessDatabase extends RoomDatabase {
         }
         return instance;
     }
-
+    public abstract WorkoutDao workoutDao();
+    public abstract SportDao sportDao();
     public abstract UserDao userDao();
 }
