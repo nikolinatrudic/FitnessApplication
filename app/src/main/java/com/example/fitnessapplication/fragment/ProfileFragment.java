@@ -1,12 +1,14 @@
 package com.example.fitnessapplication.fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,12 @@ import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.imagesproxy.ProxyImage;
 import com.example.fitnessapplication.database.LoggedInUser;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ProfileFragment extends Fragment {
 
     private ImageView imageProfile;
@@ -27,6 +35,7 @@ public class ProfileFragment extends Fragment {
     private TextView textViewHeight;
     private TextView textViewWeight;
     private Button buttonEdit;
+    private Button generateStats;
 
     public ProfileFragment() {
     }
@@ -77,6 +86,39 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        generateStats = view.findViewById(R.id.genStats);
+        generateStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generateStatistics();
+            }
+        });
         return view;
+    }
+
+    private void generateStatistics() {
+        String text = "OVO JE PROBA";
+        try {
+
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+// this will create a new name everytime and unique
+            File root = new File(Environment.getExternalStorageDirectory(), "FitnessApplication");
+// if external memory exists and folder with name Notes
+            if (!root.exists()) {
+                root.mkdirs(); // this will create folder.
+            }
+            File filepath = new File(root, timeStamp + ".txt"); // file path to save
+            FileWriter writer = new FileWriter(filepath);
+            writer.append(text);
+            writer.flush();
+            writer.close();
+            String m = "File generated with name " + timeStamp + ".txt";
+            Toast.makeText(getActivity(),m, Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "GRESKA", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

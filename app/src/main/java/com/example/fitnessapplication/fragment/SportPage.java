@@ -16,6 +16,8 @@ import com.example.fitnessapplication.R;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+
 
 public class SportPage extends Fragment {
     private TextView sportName;
@@ -61,6 +63,7 @@ public class SportPage extends Fragment {
         startWorkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 MapsFragment mapsFragment = new MapsFragment();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -69,6 +72,8 @@ public class SportPage extends Fragment {
                 fragmentTransaction.replace(R.id.fragment_container, mapsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+
             }
         });
 
