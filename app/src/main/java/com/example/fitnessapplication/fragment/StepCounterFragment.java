@@ -158,7 +158,8 @@ public class StepCounterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
-        type = getArguments().getString("type");
+
+//        type = getArguments().getString("type");
         
         dl =  (DrawerLocker) getActivity();
         NavigationView nav = getActivity().findViewById(R.id.nav_view);
@@ -208,20 +209,21 @@ public class StepCounterFragment extends Fragment {
             }
         });
 
-        dl.setDrawerEnabled(type.equals("guest") ? false  : true);
+    /*    dl.setDrawerEnabled(type.equals("guest") ? false  : true);
         text33.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         horizontalScrollView.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         skiBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         hikeBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
         runBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
-        bordBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE);
+        bordBtn.setVisibility(type.equals("guest") ? View.GONE  : View.VISIBLE); */
 
-        if(type.equals("user")) {
+     //   if(type.equals("user")) {
             text_username.setText(LoggedInUser.getInstance().getUser().getUsername());
             text_email.setText(LoggedInUser.getInstance().getUser().getEmail());
-        }
+    //    }
         return view;
     }
+    // SPORT FRAGMENT
     private void openSport(String sport){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

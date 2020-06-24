@@ -81,6 +81,18 @@ public class SportPage extends Fragment {
             }
         });
 
+        forumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                ForumFragment forumFragment = new ForumFragment();
+                fragmentTransaction.replace(R.id.fragment_container, forumFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         return view;
     }
 }

@@ -13,4 +13,6 @@
     <string name="name">Name</string>
     <string name="jone_doe">jone doe</string>
     <string name="password">Password:</string>
+    <string name="add_new_post">ADD NEW POST</string>
+    <string name="forum">Forum</string>
 </resources>

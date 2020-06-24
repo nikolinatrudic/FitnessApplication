@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.entities.Sport;
+import com.example.fitnessapplication.fragment.ForumFragment;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 profile();
                 break;
             case R.id.forum:
-                //prebaci na forum
+                forum();
                 break;
             case R.id.log_out:
                 logOut();
@@ -158,6 +159,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         StepCounterFragment stepCounterFragment = new StepCounterFragment.Builder().setType("user").build();
         fragmentTransaction.replace(R.id.fragment_container, stepCounterFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void forum() {
+      /*  if(!getPreferences(MODE_PRIVATE).getString("logged_in_user_username","").equals("")){
+            LoggedInUser.getInstance().setUser(FitnessDatabase.getInstance(getApplicationContext()).userDao().getUser(getPreferences(MODE_PRIVATE).getString("logged_in_user_username","")));
+        } */
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        ForumFragment forumFragment = new ForumFragment();
+        fragmentTransaction.replace(R.id.fragment_container, forumFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
