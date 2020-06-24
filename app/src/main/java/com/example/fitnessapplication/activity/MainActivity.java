@@ -19,6 +19,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.fitnessapplication.database.dao.SportDao;
+import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
@@ -28,6 +30,8 @@ import com.example.fitnessapplication.fragment.StepCounterFragment;
 import com.example.fitnessapplication.database.LoggedInUser;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
     FrameLayout frameLayout;
     private StartPageFragment spf;
@@ -35,13 +39,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView nav;
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
+    private SportDao sportDao;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sportDao=FitnessDatabase.getInstance(getApplicationContext()).sportDao();
+        List<Sport> sports= sportDao.getSports();
+        if(sports.size()==0){
+            Sport run=new Sport("Run",500);
+            Sport skate=new Sport("Skate",450);
+            Sport ski=new Sport("Ski",492);
+            Sport climb=new Sport("Climb",800);
+            sportDao.insertSport(run);
+            sportDao.insertSport(skate);
+            sportDao.insertSport(ski);
+            sportDao.insertSport(climb);
+        }
         frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
 
         toolbar = findViewById(R.id.toolbar);

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fitnessapplication.R;
+import com.example.fitnessapplication.database.entities.Sport;
 
 import org.w3c.dom.Text;
 
@@ -28,12 +29,14 @@ public class SportPage extends Fragment {
     private Button startWorkoutBtn;
     private Button forumBtn;
 
-    private String sport;
+    private Sport sport;
     public SportPage() {
         // Required empty public constructor
     }
-    public void setSport(String sport){
-        this.sport = sport;
+    public void setSport(Sport sport){
+        if(sport!=null) {
+            this.sport = sport;
+        }
     }
 
     @Override
@@ -54,11 +57,12 @@ public class SportPage extends Fragment {
         caloriesTxt= (TextView) view.findViewById(R.id.caloriesText);
         avgSpeedTxt = (TextView) view.findViewById(R.id.avgSpeedTxt);
 
-        sportName.setText(sport);
+        sportName.setText(sport.getName());
         //todo: get from the database all the data
         kmTxt.setText("0");
-        caloriesTxt.setText("0");
+        //caloriesTxt.setText("0");
         avgSpeedTxt.setText("0");
+        caloriesTxt.setText(sport.getCaloriesPerKm()+" ");
 
         startWorkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.fitnessapplication.database.AlarmReceiver;
+import com.example.fitnessapplication.database.FitnessDatabase;
+import com.example.fitnessapplication.database.dao.SportDao;
+import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.LoggedInUser;
@@ -179,28 +183,28 @@ public class StepCounterFragment extends Fragment {
         skiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSport("ski");
+                openSport("Ski");
             }
         });
         hikeBtn =(Button) view.findViewById(R.id.hikebtn);
         hikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSport("hike");
+                openSport("Climb");
             }
         });
         runBtn = (Button) view.findViewById(R.id.runbtn);
         runBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSport("run");
+                openSport("Run");
             }
         });
         bordBtn= (Button) view.findViewById(R.id.bordbtn);
         bordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSport("bord");
+                openSport("Skate");
             }
         });
 
@@ -221,9 +225,11 @@ public class StepCounterFragment extends Fragment {
     private void openSport(String sport){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         SportPage sportPageFragmet = new SportPage();
-        sportPageFragmet.setSport(sport);
+        SportDao sportDao= FitnessDatabase.getInstance(getContext()).sportDao();
+        Sport spor=sportDao.findSport(sport);
+        Log.d("Sport name",spor.getName());
+        sportPageFragmet.setSport(spor);
         fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
