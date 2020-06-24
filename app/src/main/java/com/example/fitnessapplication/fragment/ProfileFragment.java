@@ -31,7 +31,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fitnessapplication.BuildConfig;
 import com.example.fitnessapplication.R;
+import com.example.fitnessapplication.database.FitnessDatabase;
+import com.example.fitnessapplication.database.dao.SportDao;
+import com.example.fitnessapplication.database.dao.WorkoutDao;
+import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.database.entities.User;
+import com.example.fitnessapplication.database.entities.Workout;
 import com.example.fitnessapplication.imagesproxy.ProxyImage;
 import com.example.fitnessapplication.database.LoggedInUser;
 
@@ -45,6 +50,7 @@ import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -66,7 +72,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
+    User user;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,16 +86,36 @@ public class ProfileFragment extends Fragment {
         textViewWeight = view.findViewById(R.id.textViewWeight);
 
         if (LoggedInUser.getInstance().getUser() != null) {
-            User user = LoggedInUser.getInstance().getUser();
+            user = LoggedInUser.getInstance().getUser();
 
             ProxyImage proxyImage = new ProxyImage(getResources().getDrawable(R.drawable.profile), getResources().getDrawable(R.drawable.profilegirl), user.getGender(), imageProfile);
             proxyImage.display();
+
 
             textViewUsername.setText(user.getUsername());
             textViewEmail.setText(user.getEmail());
             textViewHeight.setText(user.getHeight() + " cm");
             textViewWeight.setText(user.getWeight() + " kg");
 
+            WorkoutDao workoutDao=FitnessDatabase.getInstance(getContext()).workoutDao();
+            SportDao sportDao=FitnessDatabase.getInstance(getContext()).sportDao();
+            List<Workout> workouts=workoutDao.findWorkoutByUserId(user.getId());
+            if(workouts==null||workouts.size()==0){
+                Sport s=sportDao.findSport("Run");
+                int uid=user.getId();
+                Workout w=new Workout();
+                w.setKm(23);
+                w.setSportId(s.getSportId());
+                w.setUserId(uid);
+                workoutDao.insertWorkout(w);
+
+                Workout w1=new Workout();
+                w1.setKm(33);
+                w1.setSportId(s.getSportId());
+                w1.setUserId(uid);
+                workoutDao.insertWorkout(w1);
+                Log.d("Workout add",w1.getKm()+"");
+            }
         }
 
         buttonEdit = view.findViewById(R.id.buttonEditProfile);
@@ -137,7 +163,17 @@ public class ProfileFragment extends Fragment {
     }
     public void generateStatistics() {
         //String text = mEditText.getText().toString();
-        String text = "OVO JE PROBA";
+        int uid=user.getId();
+        WorkoutDao workoutDao=FitnessDatabase.getInstance(getContext()).workoutDao();
+        SportDao sportDao=FitnessDatabase.getInstance(getContext()).sportDao();
+        List<Workout> listWorkout=workoutDao.findWorkoutByUserId(uid);
+
+        StringBuilder builder=new StringBuilder();
+        for (Workout w:listWorkout) {
+            String sport=sportDao.findSportId(w.getSportId()).getName();
+            builder.append("Sport"+ sport+", km"+w.getKm());
+        }
+        String text =builder.toString();
 
             File file = new File(getContext().getExternalFilesDir("text/plain"), "text");
             if (!file.exists()) {

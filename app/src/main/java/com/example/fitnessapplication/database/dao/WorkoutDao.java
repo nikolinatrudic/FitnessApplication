@@ -8,6 +8,8 @@ import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.database.entities.Workout;
 
+import java.util.List;
+
 @Dao
 public interface WorkoutDao {
     @Insert
@@ -17,5 +19,7 @@ public interface WorkoutDao {
    Workout findWorkoutBySportId(int sportId1);
 
     @Query("SELECT * from workout w WHERE w.userId like :userId1")
-    Workout findWorkoutByUserId(int userId1);
+    List<Workout> findWorkoutByUserId(int userId1);
+    @Query("SELECT * from workout w")
+    List<Workout> findWorkouts();
 }
