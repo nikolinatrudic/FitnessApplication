@@ -17,6 +17,7 @@
     <string name="forum">Forum</string>
     <string name="post">POST</string>
     <string name="new_post">New post....</string>
-    <string name="heading">Heading</string>
     <string name="post2">Post</string>
+    <string name="heading">Heading</string>
+    <string name="user">User</string>
 </resources>

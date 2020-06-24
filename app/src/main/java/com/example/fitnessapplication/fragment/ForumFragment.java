@@ -25,6 +25,7 @@ import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.iterator.IteratorInterface;
 import com.example.fitnessapplication.iterator.PostCollection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ForumFragment extends Fragment {
@@ -38,6 +39,7 @@ public class ForumFragment extends Fragment {
     private User activeUser;
 
     private PostAdapter adapter;
+    private List<ItemPost> itemPosts;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,20 +56,30 @@ public class ForumFragment extends Fragment {
         listViewPosts = view.findViewById(R.id.list);
         activeUser = LoggedInUser.getInstance().getUser();
         adapter = new PostAdapter(getContext(), 0);
+        itemPosts = new ArrayList<>();
 
         textViewTitle.setText("     FORUM - " + sport.getName());
 
         //List<Post> postsList = FitnessDatabase.getInstance(getContext()).postDao().getAllPosts();
         PostCollection postCollection = new PostCollection(FitnessDatabase.getInstance(getContext()).postDao().getAllPosts());
         Log.e("msg", "Number of posts: " + postCollection.getPosts().size());
-        adapter.setItems(postCollection.getPosts());
-        listViewPosts.setAdapter(adapter);
 
-        // JUST TO SHOW FUNCTION OF ITERATOOR
+        //adapter.setItems(postCollection.getPosts());
+
         IteratorInterface iterator = postCollection.createIterator();
         while (iterator.hasNext()) {
-            Log.e("msg", "Post: " + iterator.next().getHeading());
+         //   Log.e("msg", "Post: " + iterator.next().getHeading());
+            Post post = iterator.next();
+            String username = FitnessDatabase.getInstance(getContext()).userDao().getUserById(post.getUserId()).getUsername();
+            ItemPost itemPost = new ItemPost();
+            itemPost.setHeading(post.getHeading());
+            itemPost.setUsername(username);
+            itemPost.setText(post.getText());
+            itemPosts.add(itemPost);
         }
+
+        adapter.setItems(itemPosts);
+        listViewPosts.setAdapter(adapter);
 
         buttonAddPost.setOnClickListener(new View.OnClickListener() {
             @Override
