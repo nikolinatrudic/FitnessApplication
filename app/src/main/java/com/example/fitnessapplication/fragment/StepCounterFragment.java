@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.example.fitnessapplication.database.AlarmReceiver;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.dao.SportDao;
+import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
@@ -198,7 +199,12 @@ public class StepCounterFragment extends Fragment {
         runBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSport("Run");
+                Forum forumRun = new Forum("Forum run");
+                FitnessDatabase.getInstance(getContext()).forumDao().insertForum(forumRun);
+                Sport sportRun = new Sport("Run", 50);
+                sportRun.setForumId(forumRun.getForumId());
+                FitnessDatabase.getInstance(getContext()).sportDao().insertSport(sportRun);
+               // openSport("Run");
             }
         });
         bordBtn= (Button) view.findViewById(R.id.bordbtn);

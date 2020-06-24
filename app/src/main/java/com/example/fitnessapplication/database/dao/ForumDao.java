@@ -8,6 +8,6 @@ import com.example.fitnessapplication.database.entities.Forum;
 @Dao
 public interface ForumDao {
 
-   /* @Insert
-    void insertForum (Forum forum); */
+    @Insert
+    void insertForum(Forum forum);
 }

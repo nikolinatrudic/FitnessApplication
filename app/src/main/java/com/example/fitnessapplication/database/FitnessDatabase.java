@@ -13,8 +13,10 @@ import com.example.fitnessapplication.database.dao.WorkoutDao;
 import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.database.entities.Workout;
+import com.example.fitnessapplication.database.entities.Forum;
 
-@Database(entities = {User.class, Workout.class, Sport.class}, exportSchema = false, version = 2)
+
+@Database(entities = {User.class, Workout.class, Sport.class, Forum.class}, exportSchema = false, version = 3)
 public abstract class FitnessDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "fitness_db_test1";
