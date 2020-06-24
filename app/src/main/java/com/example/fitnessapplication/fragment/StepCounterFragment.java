@@ -210,6 +210,17 @@ public class StepCounterFragment extends Fragment {
                 sportRun.setForumId(forumRun.getForumId());
                 FitnessDatabase.getInstance(getContext()).sportDao().insertSport(sportRun);
                // openSport("Run");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                SportPage sportPageFragmet = new SportPage();
+                SportDao sportDao= FitnessDatabase.getInstance(getContext()).sportDao();
+                Log.d("Sport name",sportRun.getName());
+                sportPageFragmet.setSport(sportRun);
+                sportPageFragmet.setForum(forumRun);
+                fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
             }
         });
         bordBtn= (Button) view.findViewById(R.id.bordbtn);

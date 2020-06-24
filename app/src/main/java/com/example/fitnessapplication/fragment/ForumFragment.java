@@ -22,6 +22,8 @@ import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Post;
 import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.database.entities.User;
+import com.example.fitnessapplication.iterator.IteratorInterface;
+import com.example.fitnessapplication.iterator.PostCollection;
 
 import java.util.List;
 
@@ -55,10 +57,17 @@ public class ForumFragment extends Fragment {
 
         textViewTitle.setText("     FORUM - " + sport.getName());
 
-        List<Post> postsList = FitnessDatabase.getInstance(getContext()).postDao().getAllPosts();
-        Log.e("msg", "Number of posts: " + postsList.size());
-        adapter.setItems(postsList);
+        //List<Post> postsList = FitnessDatabase.getInstance(getContext()).postDao().getAllPosts();
+        PostCollection postCollection = new PostCollection(FitnessDatabase.getInstance(getContext()).postDao().getAllPosts());
+        Log.e("msg", "Number of posts: " + postCollection.getPosts().size());
+        adapter.setItems(postCollection.getPosts());
         listViewPosts.setAdapter(adapter);
+
+        // JUST TO SHOW FUNCTION OF ITERATOOR
+        IteratorInterface iterator = postCollection.createIterator();
+        while (iterator.hasNext()) {
+            Log.e("msg", "Post: " + iterator.next().getHeading());
+        }
 
         buttonAddPost.setOnClickListener(new View.OnClickListener() {
             @Override
