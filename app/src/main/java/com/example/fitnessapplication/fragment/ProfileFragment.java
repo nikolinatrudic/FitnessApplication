@@ -160,7 +160,7 @@ public class ProfileFragment extends Fragment {
 
     public void openFile(Uri uri){
         //todo:won't open file
-        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Intent intent = new Intent(Intent.ACTION_EDIT);
       //  intent.setData(uri);
         intent.setDataAndType(uri, "text/plain");
         startActivity(intent);
