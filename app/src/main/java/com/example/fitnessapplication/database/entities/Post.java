@@ -19,8 +19,7 @@ public class Post {
     @ColumnInfo(name = "heading")
     private String heading;
 
-    public Post(int postId, int userId, int forumId, String text, String heading) {
-        this.postId = postId;
+    public Post(int userId, int forumId, String text, String heading) {
         this.userId = userId;
         this.forumId = forumId;
         this.text = text;

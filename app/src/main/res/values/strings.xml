@@ -15,4 +15,7 @@
     <string name="password">Password:</string>
     <string name="add_new_post">ADD NEW POST</string>
     <string name="forum">Forum</string>
+    <string name="post">POST</string>
+    <string name="new_post">New post....</string>
+    <string name="heading">Heading</string>
 </resources>
