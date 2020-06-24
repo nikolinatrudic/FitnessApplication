@@ -1,10 +1,16 @@
 package com.example.fitnessapplication.fragment;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +21,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.fitnessapplication.BuildConfig;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.entities.User;
 import com.example.fitnessapplication.imagesproxy.ProxyImage;
@@ -31,6 +40,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -126,54 +137,33 @@ public class ProfileFragment extends Fragment {
     public void generateStatistics() {
         //String text = mEditText.getText().toString();
         String text = "OVO JE PROBA";
-        FileOutputStream fos = null;
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String fileName = timeStamp+".txt";
-            fos = getActivity().openFileOutput(fileName, Context.MODE_PRIVATE);
-            fos.write(text.getBytes());
-            //mEditText.getText().clear();
-            Toast.makeText(getActivity(), "Saved to " + getActivity().getFilesDir() + "/" + fileName,
-                    Toast.LENGTH_LONG).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+            File file = new File(getContext().getExternalFilesDir("text/plain"), "text");
+            if (!file.exists()) {
+                file.mkdir();
             }
-        }
+            try {
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String fileName =  timeStamp + ".txt";
+                File gpxfile = new File(file, fileName);
+                FileWriter writer = new FileWriter(gpxfile);
+                writer.append(text);
+                writer.flush();
+                writer.close();
+                Uri uri = Uri.parse(gpxfile.getAbsolutePath());
+                openFile(uri);
+               // Toast.makeText(getActivity(), "Saved your text at "+gpxfile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            } catch (Exception e) { }
+
+
     }
 
-
-    private void generateStatistics2() {
-        String text = "OVO JE PROBA";
-        try {
-
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-// this will create a new name everytime and unique
-            File root = new File(Environment.getExternalStorageDirectory(), "FitnessApplication");
-// if external memory exists and folder with name Notes
-            if (!root.exists()) {
-                root.mkdirs(); // this will create folder.
-            }
-            File filepath = new File(root, timeStamp + ".txt"); // file path to save
-            FileWriter writer = new FileWriter(filepath);
-            writer.append(text);
-            writer.flush();
-            writer.close();
-            String m = "File generated with name " + timeStamp + ".txt";
-            Toast.makeText(getActivity(),m, Toast.LENGTH_SHORT).show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "GRESKA", Toast.LENGTH_SHORT).show();
-        }
-
+    public void openFile(Uri uri){
+        //todo:won't open file
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+      //  intent.setData(uri);
+        intent.setDataAndType(uri, "text/plain");
+        startActivity(intent);
     }
+
 }
