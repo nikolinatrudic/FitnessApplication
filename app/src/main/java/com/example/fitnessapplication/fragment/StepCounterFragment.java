@@ -147,7 +147,6 @@ public class StepCounterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
 
        // type = getArguments().getString("type");
-        //todo: for user to stay logged in
         sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("user", user);
@@ -202,7 +201,6 @@ public class StepCounterFragment extends Fragment {
                 openSport("Skate");
             }
         });
-        //todo:dodaj u logged in user njegov username,
         String type = sharedPreferences.getString("logged_in_user_username","guest");
         Log.e("MSF",type);
         dl.setDrawerEnabled(type.equals("guest") ? false  : true);

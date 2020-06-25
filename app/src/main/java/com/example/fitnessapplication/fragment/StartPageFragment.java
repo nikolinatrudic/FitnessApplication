@@ -25,7 +25,7 @@ public class StartPageFragment extends Fragment {
     private Button loginButton;
     private Button signupButton;
     private ImageView picture;
-//todo:initialization of sports in database
+
     public StartPageFragment() {
         // Required empty public constructor
     }

@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     private SportDao sportDao;
-//todo: add in nav bar forums (click on the forum and lead to the other page where user can choose from forums)
-    //todo: make forum page
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
