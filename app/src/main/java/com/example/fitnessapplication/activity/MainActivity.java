@@ -19,14 +19,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.fitnessapplication.Accelerometer;
-import com.example.fitnessapplication.AccelerometerSingleton;
+import com.example.fitnessapplication.accelerometer.Accelerometer;
+import com.example.fitnessapplication.accelerometer.AccelerometerSingleton;
 import com.example.fitnessapplication.database.dao.ForumDao;
 import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.fragment.ChooseForumFragment;
-import com.example.fitnessapplication.fragment.ForumFragment;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
@@ -52,8 +51,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Accelerometer accelerometer = new Accelerometer();
         AccelerometerSingleton.getInstance().setAccelerometer(accelerometer);
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        int steps = sharedPreferences.getInt("stepCount", 0);
+        accelerometer.setStepsNumber(steps);
+
+
         sportDao=FitnessDatabase.getInstance(getApplicationContext()).sportDao();
         ForumDao forumDao = FitnessDatabase.getInstance(getApplicationContext()).forumDao();
         List<Forum> forums = forumDao.getForums();

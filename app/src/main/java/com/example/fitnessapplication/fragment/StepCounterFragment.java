@@ -5,8 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,12 +26,11 @@ import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.fitnessapplication.Accelerometer;
-import com.example.fitnessapplication.AccelerometerSingleton;
+import com.example.fitnessapplication.accelerometer.Accelerometer;
+import com.example.fitnessapplication.accelerometer.AccelerometerSingleton;
 import com.example.fitnessapplication.database.AlarmReceiver;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.dao.SportDao;
-import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
@@ -240,6 +236,15 @@ public class StepCounterFragment extends Fragment {
         //sensorManager.registerListener(stepDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL, 10000);
         /*SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         stepCount = sharedPreferences.getInt("stepCount", 0);*/
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        if(sharedPreferences.getInt("stepCount", 0) < stepCount){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            //editor.clear();
+            editor.putInt("stepCount", stepCount);
+            editor.apply();
+        } else {
+            stepCount = sharedPreferences.getInt("stepCount", 0);
+        }
     }
     private int calculateProgress(int steps){
         return steps/60;
@@ -252,6 +257,11 @@ public class StepCounterFragment extends Fragment {
         editor.clear();
         editor.putInt("stepCount", stepCount);
         editor.apply();*/
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.clear();
+        editor.putInt("stepCount", stepCount);
+        editor.apply();
     }
 
     @Override
@@ -263,43 +273,22 @@ public class StepCounterFragment extends Fragment {
         editor.clear();
         editor.putInt("stepCount", stepCount);
         editor.apply();*/
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.clear();
+        editor.putInt("stepCount", stepCount);
+        editor.apply();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
+        //stepCount = accelerometer.getStepsNumber();
         SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("stepCount", stepCount);
         editor.apply();
+        editor.commit();
     }
-
-
-
-    /*@Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        LoggedInUser.getInstance().setUser(null);
-
-        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("logged_in_user_username", null);
-        editor.apply();
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        StartPageFragment startPageFragment = new StartPageFragment();
-        fragmentTransaction.replace(R.id.fragment_container, startPageFragment);
-        fragmentTransaction.commit();
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }

@@ -1,4 +1,4 @@
-package com.example.fitnessapplication;
+package com.example.fitnessapplication.accelerometer;
 
 public class Accelerometer {
     private int stepsNumber;
@@ -35,5 +35,9 @@ public class Accelerometer {
 
     public int getStepsNumber(){
         return stepsNumber;
+    }
+
+    public void setStepsNumber(int steps){
+        stepsNumber = steps;
     }
 }

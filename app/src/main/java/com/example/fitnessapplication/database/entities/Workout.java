@@ -17,6 +17,9 @@ public class Workout {
 
     private int sportId;
 
+    @ColumnInfo(name = "calories")
+    private float calories;
+
     public void setWorkoutId(int workoutId) {
         this.workoutId = workoutId;
     }
@@ -47,5 +50,13 @@ public class Workout {
 
     public int getSportId() {
         return sportId;
+    }
+
+    public float getCalories() {
+        return calories;
+    }
+
+    public void setCalories(float calories) {
+        this.calories = calories;
     }
 }

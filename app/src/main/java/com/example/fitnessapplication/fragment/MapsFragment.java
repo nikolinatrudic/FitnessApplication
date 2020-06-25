@@ -11,14 +11,11 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,17 +27,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.fitnessapplication.Accelerometer;
-import com.example.fitnessapplication.AccelerometerSingleton;
+import com.example.fitnessapplication.accelerometer.Accelerometer;
+import com.example.fitnessapplication.accelerometer.AccelerometerSingleton;
 import com.example.fitnessapplication.R;
-import com.example.fitnessapplication.WorkoutFactory;
-import com.example.fitnessapplication.WorkoutInterface;
+import com.example.fitnessapplication.workouts.WorkoutFactory;
+import com.example.fitnessapplication.workouts.WorkoutInterface;
 import com.example.fitnessapplication.database.FitnessDatabase;
+import com.example.fitnessapplication.database.LoggedInUser;
 import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.entities.Sport;
-import com.example.fitnessapplication.fragment.SportPage;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.example.fitnessapplication.database.entities.Workout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,29 +44,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import org.json.JSONArray;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -111,6 +90,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         mMapView = view.findViewById(R.id.mapView);
 
+        workoutFactory = new WorkoutFactory();
+
         initGoogleMap(savedInstanceState);
 
         startImage = (ImageView) view.findViewById(R.id.buttonStart);
@@ -122,7 +103,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelerometer = AccelerometerSingleton.getInstance().getAccelerometer();
-        currentStepsNumber = accelerometer.getStepsNumber();
         Log.e("msg", getArguments().getString("sportName"));
 
         return view;
@@ -172,12 +152,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         polyline1 = map1.addPolyline(poptions);
         points = new ArrayList<>();
-        points.add(currentLoc);
 
         startImage.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+                currentStepsNumber = accelerometer.getStepsNumber();
                 stepDetector = new SensorEventListener() {
                     @Override
                     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -204,23 +184,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_FINE_LOCATION);
                 }
-
-                /*fusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                // Got last known location. In some rare situations this can be null.
-                                if (location != null) {
-                                    startLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                                    map1.addMarker(new MarkerOptions()
-                                            .position(startLoc)
-                                            .title("Start location"));
-                                    map1.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
-                                } else {
-                                    Toast.makeText(getContext(), "Location not found", Toast.LENGTH_SHORT);
-                                }
-                            }
-                        });*/
 
                 int minTime = 10000;
                 float minDistance = (float) 3;
@@ -269,37 +232,39 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         stopImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(points.size() >= 2) {
-                    locationManager.removeUpdates(locationListener);
+                totalStepsNumber = accelerometer.getStepsNumber();
+                if (totalStepsNumber - currentStepsNumber >= 20) {
+                    if(locationListener != null)
+                        locationManager.removeUpdates(locationListener);
                     sensorManager.unregisterListener(stepDetector);
-                    totalStepsNumber = accelerometer.getStepsNumber();
-                    //locationStop();
-                    //int listSize = points.size();
-                    //float[] resultArray = new float[5];
-                    Log.e("msg", "trenutno: lat:" + currentLoc.latitude + " log: " + currentLoc.longitude);
-                    Log.e("msg", "size: " + points.size());
-                    //Location.distanceBetween(startLoc.latitude, startLoc.longitude, stopLoc.latitude, stopLoc.longitude, resultArray);
+
+                    //TODO: include time calculating, because of speed
 
                     String sportName = getArguments().getString("sportName");
+                    SportDao sportDao = FitnessDatabase.getInstance(getContext()).sportDao();
+                    Sport sport = sportDao.findSport(sportName);
                     Log.e("msg", sportName);
-                    WorkoutInterface workout = workoutFactory.getWorkout(sportName, (float) 0);
+                    WorkoutInterface workout = workoutFactory.getWorkout(sportName, totalStepsNumber - currentStepsNumber, sport.getCaloriesPerKm());
+                    float km = workout.calculateKm();
+                    float calories = workout.countCalories();
+
                     Bundle bundle = new Bundle();
-                    bundle.putString("km", 0 + "");
-                    bundle.putString("calories", workout.countCalories() + "");
+                    bundle.putString("km", km + "");
+                    bundle.putString("calories", calories + "");
                     bundle.putString("averageSpeed", workout.calculateSpeed() + "");
 
                     SportPage sportPage = new SportPage();
-                    SportDao sportDao = FitnessDatabase.getInstance(getContext()).sportDao();
-                    Sport sport = sportDao.findSport(sportName);
                     Log.d("Sport name", sport.getName());
                     sportPage.setSport(sport);
-
                     sportPage.setArguments(bundle);
+
+                    addWorkoutInDatabase(km, calories, LoggedInUser.getInstance().getUser().getId(), sport.getSportId());
+
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container, sportPage);
                     fragmentTransaction.commit();
-                } else{
+                } else {
                     FragmentManager manager = getActivity().getSupportFragmentManager();
                     FragmentTransaction trans = manager.beginTransaction();
                     trans.remove(MapsFragment.this);
@@ -327,6 +292,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onStop();
         mMapView.onStop();
     }
+
     @Override
     public void onPause() {
         mMapView.onPause();
@@ -339,7 +305,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onDestroy();
     }
 
-    private void locationStop(){
+    private void locationStop() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -363,4 +329,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
     }
+
+    private void addWorkoutInDatabase(float km, float calories, int userId, int sportId) {
+        Workout workout = new Workout();
+        workout.setKm(km);
+        workout.setUserId(userId);
+        workout.setSportId(sportId);
+        workout.setCalories(calories);
+
+        FitnessDatabase.getInstance(getContext()).workoutDao().insertWorkout(workout);
+        Log.e("msg","uspesno upisao");
+    }
+
 }

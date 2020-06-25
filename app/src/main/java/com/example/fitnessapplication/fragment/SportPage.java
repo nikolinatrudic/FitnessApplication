@@ -62,17 +62,12 @@ public class SportPage extends Fragment {
 
         sportName.setText(sport.getName());
         //todo: get from the database all the data
-        if(getArguments() != null){
-            kmTxt.setText(getArguments().getString("km"));
-            //caloriesTxt.setText("0");
-            avgSpeedTxt.setText(getArguments().getString("averageSpeed"));
-            caloriesTxt.setText(getArguments().getString("calories"));
-        } else {
-            kmTxt.setText("0");
-            //caloriesTxt.setText("0");
-            avgSpeedTxt.setText("0");
-            caloriesTxt.setText(sport.getCaloriesPerKm() + " ");
-        }
+
+        kmTxt.setText("0");
+        //caloriesTxt.setText("0");
+        avgSpeedTxt.setText("0");
+        caloriesTxt.setText(sport.getCaloriesPerKm() + " ");
+
 
         startWorkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,5 +104,16 @@ public class SportPage extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getArguments() != null){
+            kmTxt.setText(getArguments().getString("km"));
+            //caloriesTxt.setText("0");
+            avgSpeedTxt.setText(getArguments().getString("averageSpeed"));
+            caloriesTxt.setText(getArguments().getString("calories"));
+        }
     }
 }
