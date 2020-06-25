@@ -25,6 +25,7 @@ import com.example.fitnessapplication.database.dao.ForumDao;
 import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
+import com.example.fitnessapplication.fragment.ChooseForumFragment;
 import com.example.fitnessapplication.fragment.ForumFragment;
 import com.example.fitnessapplication.menu.DrawerLocker;
 import com.example.fitnessapplication.R;
@@ -66,9 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sportDao.insertSport(skate);
             sportDao.insertSport(ski);
             sportDao.insertSport(climb);
-
-
-
 
         }
         if(forums.size()==0){
@@ -161,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 profile();
                 break;
             case R.id.forum:
-              //  forum();
+                forum();
                 break;
             case R.id.log_out:
                 logOut();
@@ -195,8 +193,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("logged_in_user_username", LoggedInUser.getInstance().getUser().getUsername());
         editor.apply();
-        ForumFragment forumFragment = new ForumFragment();
-        fragmentTransaction.replace(R.id.fragment_container, forumFragment);
+        ChooseForumFragment chooseForumFragment = new ChooseForumFragment();
+        fragmentTransaction.replace(R.id.fragment_container, chooseForumFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
