@@ -77,7 +77,6 @@ public class ForumFragment extends Fragment {
             itemPost.setText(post.getText());
             itemPosts.add(itemPost);
         }
-
         adapter.setItems(itemPosts);
         listViewPosts.setAdapter(adapter);
 
