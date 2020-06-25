@@ -1,7 +1,11 @@
 package com.example.fitnessapplication.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
@@ -35,6 +40,9 @@ public class SportPage extends Fragment {
 
     private Sport sport;
     private Forum forum;
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 44;
+
     public SportPage() {
         // Required empty public constructor
     }
@@ -74,17 +82,14 @@ public class SportPage extends Fragment {
         startWorkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
 
-                MapsFragment mapsFragment = new MapsFragment();
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                fragmentTransaction.replace(R.id.fragment_container, mapsFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-
+                    return;
+                }
+               openMaps();
             }
         });
 
@@ -107,5 +112,30 @@ public class SportPage extends Fragment {
             }
         });
         return view;
+    }
+    private void openMaps(){
+        MapsFragment mapsFragment = new MapsFragment();
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragment_container, mapsFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openMaps();
+            } else {
+                Toast.makeText(getActivity(),
+                        "Location Permission Denied",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
     }
 }
