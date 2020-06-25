@@ -36,7 +36,6 @@ public class StartPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(false);
     }
-//todo:prepraviti da je na dugme guest experience da se tu pristupa kao guest
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
