@@ -3,14 +3,20 @@ package com.example.fitnessapplication.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -24,6 +30,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fitnessapplication.Accelerometer;
+import com.example.fitnessapplication.AccelerometerSingleton;
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.WorkoutFactory;
 import com.example.fitnessapplication.WorkoutInterface;
@@ -46,7 +54,6 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONArray;
 
@@ -86,6 +93,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private LocationListener locationListener;
     private LocationManager locationManager;
 
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private SensorEventListener stepDetector;
+
+    private Accelerometer accelerometer;
+    private int currentStepsNumber;
+    private int totalStepsNumber;
+
     private WorkoutFactory workoutFactory;
 
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 99;
@@ -103,6 +118,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         stopImage = (ImageView) view.findViewById(R.id.buttonStop);
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelerometer = AccelerometerSingleton.getInstance().getAccelerometer();
+        currentStepsNumber = accelerometer.getStepsNumber();
+        Log.e("msg", getArguments().getString("sportName"));
 
         return view;
     }
@@ -151,10 +172,33 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         polyline1 = map1.addPolyline(poptions);
         points = new ArrayList<>();
+        points.add(currentLoc);
 
         startImage.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+                stepDetector = new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent sensorEvent) {
+                        if (sensorEvent != null) {
+                            float x_acceleration = sensorEvent.values[0];
+                            float y_acceleration = sensorEvent.values[1];
+                            float z_acceleration = sensorEvent.values[2];
+
+                            accelerometer.calculateSteps(x_acceleration, y_acceleration, z_acceleration);
+                        }
+                    }
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                    }
+
+                };
+
+                sensorManager.registerListener(stepDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL, 10000);
+
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -227,18 +271,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 if(points.size() >= 2) {
                     locationManager.removeUpdates(locationListener);
+                    sensorManager.unregisterListener(stepDetector);
+                    totalStepsNumber = accelerometer.getStepsNumber();
                     //locationStop();
-                    int listSize = points.size();
+                    //int listSize = points.size();
                     //float[] resultArray = new float[5];
                     Log.e("msg", "trenutno: lat:" + currentLoc.latitude + " log: " + currentLoc.longitude);
                     Log.e("msg", "size: " + points.size());
                     //Location.distanceBetween(startLoc.latitude, startLoc.longitude, stopLoc.latitude, stopLoc.longitude, resultArray);
-                    double promenljiva = SphericalUtil.computeArea(points);
 
                     String sportName = getArguments().getString("sportName");
-                    WorkoutInterface workout = workoutFactory.getWorkout(sportName, (float) promenljiva);
+                    Log.e("msg", sportName);
+                    WorkoutInterface workout = workoutFactory.getWorkout(sportName, (float) 0);
                     Bundle bundle = new Bundle();
-                    bundle.putString("km", promenljiva + "");
+                    bundle.putString("km", 0 + "");
                     bundle.putString("calories", workout.countCalories() + "");
                     bundle.putString("averageSpeed", workout.calculateSpeed() + "");
 

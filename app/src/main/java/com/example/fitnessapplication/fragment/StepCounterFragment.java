@@ -29,6 +29,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.fitnessapplication.Accelerometer;
+import com.example.fitnessapplication.AccelerometerSingleton;
 import com.example.fitnessapplication.database.AlarmReceiver;
 import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.dao.SportDao;
@@ -72,6 +74,8 @@ public class StepCounterFragment extends Fragment {
     private String user;
     private  SharedPreferences sharedPreferences;
 
+    private Accelerometer accelerometer;
+
     private static final int RQ_SYNC_SERVICE = 1101;
 
     public StepCounterFragment() {
@@ -90,6 +94,8 @@ public class StepCounterFragment extends Fragment {
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        accelerometer = AccelerometerSingleton.getInstance().getAccelerometer();
+
         alarmManager = stepAlarmManager();
         stepDetector = new SensorEventListener() {
             @Override
@@ -99,14 +105,8 @@ public class StepCounterFragment extends Fragment {
                     float y_acceleration = sensorEvent.values[1];
                     float z_acceleration = sensorEvent.values[2];
 
+                    stepCount = accelerometer.calculateSteps(x_acceleration, y_acceleration, z_acceleration);
 
-                    double magnitude = Math.sqrt(x_acceleration * x_acceleration + y_acceleration * y_acceleration + z_acceleration * z_acceleration);
-                    double magnitudeDelta = magnitude - magnitudePrevious;
-                    magnitudePrevious = magnitude;
-
-                    if (magnitudeDelta > 6) {
-                        stepCount++;
-                    }
                     stepsNumber.setText(stepCount.toString());
                     progressBar.setProgress(calculateProgress(stepCount));
                 }
