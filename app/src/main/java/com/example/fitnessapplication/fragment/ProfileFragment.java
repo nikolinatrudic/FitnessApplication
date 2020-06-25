@@ -173,10 +173,46 @@ public class ProfileFragment extends Fragment {
 
         StringBuilder builder=new StringBuilder();
         for (Workout w:listWorkout) {
-            String sport=sportDao.findSportId(w.getSportId()).getName();
-            builder.append("Sport"+ sport+", km"+w.getKm());
+            Sport sport=sportDao.findSportId(w.getSportId());
+            builder.append("Sport: "+ sport.getName() + ", km: "+w.getKm()+". calories: "+ sport.getCaloriesPerKm()+"\n");
         }
         String text =builder.toString();
+        final boolean[] isText =new boolean[1];
+
+        //String text = mEditText.getText().toString();
+        alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setMessage(text)
+                .setCancelable(true)
+                .setPositiveButton("Export in CSV format", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        isText[0] =false;
+                    }
+                })
+                .setNegativeButton("Export in TEXT format", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        isText[0] =true;
+                    }
+                });
+        //Creating dialog box
+        AlertDialog alert = alertBuilder.create();
+        alert.setTitle("Your statistics");
+        alert.show();
+        StringBuilder builder1=new StringBuilder();
+        String text1;
+        if(isText[0]) {
+            for (Workout w : listWorkout) {
+                Sport sport = sportDao.findSportId(w.getSportId());
+                builder1.append("Sport: " + sport.getName() + ", km: " + w.getKm() + ", calories: " + sport.getCaloriesPerKm() + "\n");
+            }
+            text1 = builder1.toString();
+        }else{
+            builder1.append("Sport,Km,Calories\n");
+            for (Workout w : listWorkout) {
+                Sport sport = sportDao.findSportId(w.getSportId());
+                builder1.append(sport.getName() + "," + w.getKm() + "," + sport.getCaloriesPerKm() + "\n");
+            }
+          text1 = builder1.toString();
+        }
 
         File file = new File(getContext().getExternalFilesDir("text/plain"), "text");
         if (!file.exists()) {
@@ -184,10 +220,15 @@ public class ProfileFragment extends Fragment {
         }
         try {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String fileName =  timeStamp + ".txt";
+            String fileName;
+            if(isText[0])
+                fileName =  timeStamp + ".txt";
+            else
+                fileName =  timeStamp + ".csv";
+
             File gpxfile = new File(file, fileName);
             FileWriter writer = new FileWriter(gpxfile);
-            writer.append(text);
+            writer.append(text1);
             writer.flush();
             writer.close();
             Uri uri = Uri.parse(gpxfile.getAbsolutePath());
@@ -195,24 +236,7 @@ public class ProfileFragment extends Fragment {
             // Toast.makeText(getActivity(), "Saved your text at "+gpxfile.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (Exception e) { }
 
-        //String text = mEditText.getText().toString();
-        alertBuilder = new AlertDialog.Builder(getContext());
-        alertBuilder.setMessage("Your statistics")
-                .setCancelable(true)
-                .setPositiveButton("Export in CSV format", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //openFile(uri);
-                    }
-                })
-                .setNegativeButton("Export in TEXT format", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
 
-                    }
-                });
-        //Creating dialog box
-        AlertDialog alert = alertBuilder.create();
-        alert.setTitle("Your statistics");
-        alert.show();
 
 
 
