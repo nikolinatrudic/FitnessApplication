@@ -257,7 +257,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 totalStepsNumber = accelerometer.getStepsNumber();
                 if (totalStepsNumber - currentStepsNumber >= 20) {
-                    locationManager.removeUpdates(locationListener);
+                    if(locationListener != null)
+                        locationManager.removeUpdates(locationListener);
                     sensorManager.unregisterListener(stepDetector);
 
                     //TODO: include time calculating, because of speed
