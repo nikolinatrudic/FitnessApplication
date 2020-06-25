@@ -1,8 +1,10 @@
 package com.example.fitnessapplication.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -62,6 +64,7 @@ public class ProfileFragment extends Fragment {
     private Button buttonEdit;
     private Button generateStats;
 
+    AlertDialog.Builder alertBuilder;
     private static final int STORAGE_PERMISSION_CODE = 101;
 
     public ProfileFragment() {
@@ -162,7 +165,7 @@ public class ProfileFragment extends Fragment {
         }
     }
     public void generateStatistics() {
-        //String text = mEditText.getText().toString();
+
         int uid=user.getId();
         WorkoutDao workoutDao=FitnessDatabase.getInstance(getContext()).workoutDao();
         SportDao sportDao=FitnessDatabase.getInstance(getContext()).sportDao();
@@ -175,22 +178,43 @@ public class ProfileFragment extends Fragment {
         }
         String text =builder.toString();
 
-            File file = new File(getContext().getExternalFilesDir("text/plain"), "text");
-            if (!file.exists()) {
-                file.mkdir();
-            }
-            try {
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String fileName =  timeStamp + ".txt";
-                File gpxfile = new File(file, fileName);
-                FileWriter writer = new FileWriter(gpxfile);
-                writer.append(text);
-                writer.flush();
-                writer.close();
-                Uri uri = Uri.parse(gpxfile.getAbsolutePath());
-                openFile(uri);
-               // Toast.makeText(getActivity(), "Saved your text at "+gpxfile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-            } catch (Exception e) { }
+        File file = new File(getContext().getExternalFilesDir("text/plain"), "text");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String fileName =  timeStamp + ".txt";
+            File gpxfile = new File(file, fileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(text);
+            writer.flush();
+            writer.close();
+            Uri uri = Uri.parse(gpxfile.getAbsolutePath());
+
+            // Toast.makeText(getActivity(), "Saved your text at "+gpxfile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) { }
+
+        //String text = mEditText.getText().toString();
+        alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setMessage("Your statistics")
+                .setCancelable(true)
+                .setPositiveButton("Export in CSV format", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //openFile(uri);
+                    }
+                })
+                .setNegativeButton("Export in TEXT format", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        //Creating dialog box
+        AlertDialog alert = alertBuilder.create();
+        alert.setTitle("Your statistics");
+        alert.show();
+
+
 
 
     }
