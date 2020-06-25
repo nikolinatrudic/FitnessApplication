@@ -2,7 +2,7 @@ package com.example.fitnessapplication;
 
 public interface WorkoutInterface {
 
-    int countCalories();
+    float countCalories();
 
     int calculateSpeed();
 

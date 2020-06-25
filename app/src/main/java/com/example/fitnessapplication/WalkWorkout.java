@@ -15,9 +15,9 @@ public class WalkWorkout implements WorkoutInterface {
     }
 
     @Override
-    public int countCalories() {
-        int calories = (int) ((int) steps * 0.04);
-        return 0;
+    public float countCalories() {
+        float calories = (float) (steps * 0.07);
+        return calories;
     }
 
     @Override

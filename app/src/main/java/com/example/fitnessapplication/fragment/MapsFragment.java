@@ -111,6 +111,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
         mMapView = view.findViewById(R.id.mapView);
 
+        workoutFactory = new WorkoutFactory();
+
         initGoogleMap(savedInstanceState);
 
         startImage = (ImageView) view.findViewById(R.id.buttonStart);
@@ -251,7 +253,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         stopImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(points.size() >= 1) {
+                if(points.size() >= 0) {
                     locationManager.removeUpdates(locationListener);
                     sensorManager.unregisterListener(stepDetector);
                     totalStepsNumber = accelerometer.getStepsNumber();
@@ -264,13 +266,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     bundle.putString("calories", workout.countCalories() + "");
                     bundle.putString("averageSpeed", workout.calculateSpeed() + "");
 
+
                     SportPage sportPage = new SportPage();
                     SportDao sportDao = FitnessDatabase.getInstance(getContext()).sportDao();
                     Sport sport = sportDao.findSport(sportName);
                     Log.d("Sport name", sport.getName());
                     sportPage.setSport(sport);
-
                     sportPage.setArguments(bundle);
+
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container, sportPage);
