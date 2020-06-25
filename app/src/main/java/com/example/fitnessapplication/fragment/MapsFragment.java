@@ -260,6 +260,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     locationManager.removeUpdates(locationListener);
                     sensorManager.unregisterListener(stepDetector);
 
+                    //TODO: include time calculating, because of speed
+
                     String sportName = getArguments().getString("sportName");
                     SportDao sportDao = FitnessDatabase.getInstance(getContext()).sportDao();
                     Sport sport = sportDao.findSport(sportName);

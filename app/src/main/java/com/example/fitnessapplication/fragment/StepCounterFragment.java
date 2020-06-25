@@ -240,6 +240,15 @@ public class StepCounterFragment extends Fragment {
         //sensorManager.registerListener(stepDetector, sensor, SensorManager.SENSOR_DELAY_NORMAL, 10000);
         /*SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         stepCount = sharedPreferences.getInt("stepCount", 0);*/
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        if(sharedPreferences.getInt("stepCount", 0) < stepCount){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            //editor.clear();
+            editor.putInt("stepCount", stepCount);
+            editor.apply();
+        } else {
+            stepCount = sharedPreferences.getInt("stepCount", 0);
+        }
     }
     private int calculateProgress(int steps){
         return steps/60;
@@ -252,6 +261,11 @@ public class StepCounterFragment extends Fragment {
         editor.clear();
         editor.putInt("stepCount", stepCount);
         editor.apply();*/
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.clear();
+        editor.putInt("stepCount", stepCount);
+        editor.apply();
     }
 
     @Override
@@ -263,43 +277,22 @@ public class StepCounterFragment extends Fragment {
         editor.clear();
         editor.putInt("stepCount", stepCount);
         editor.apply();*/
+        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.clear();
+        editor.putInt("stepCount", stepCount);
+        editor.apply();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
+        //stepCount = accelerometer.getStepsNumber();
         SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("stepCount", stepCount);
         editor.apply();
+        editor.commit();
     }
-
-
-
-    /*@Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        LoggedInUser.getInstance().setUser(null);
-
-        SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("logged_in_user_username", null);
-        editor.apply();
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        StartPageFragment startPageFragment = new StartPageFragment();
-        fragmentTransaction.replace(R.id.fragment_container, startPageFragment);
-        fragmentTransaction.commit();
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }

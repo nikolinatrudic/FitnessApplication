@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Accelerometer accelerometer = new Accelerometer();
         AccelerometerSingleton.getInstance().setAccelerometer(accelerometer);
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String steps = sharedPreferences.getString("stepsNumber", String.valueOf(0));
-        accelerometer.setStepsNumber(Integer.parseInt(steps));
+        int steps = sharedPreferences.getInt("stepCount", 0);
+        accelerometer.setStepsNumber(steps);
 
 
         sportDao=FitnessDatabase.getInstance(getApplicationContext()).sportDao();
