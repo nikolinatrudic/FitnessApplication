@@ -36,7 +36,6 @@ public class StartPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(false);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

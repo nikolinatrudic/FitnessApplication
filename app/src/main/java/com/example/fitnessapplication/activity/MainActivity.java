@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
         }
     }
-
+//todo: u meniju ne pise ime i mejl user-a. user-a bi trebalo da cuvamo u logged-in-user
     @Override
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
