@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fitnessapplication.R;
+import com.example.fitnessapplication.database.FitnessDatabase;
 import com.example.fitnessapplication.database.entities.Sport;
 
 import org.w3c.dom.Text;
@@ -101,6 +102,7 @@ public class SportPage extends Fragment {
 
                 ForumFragment forumFragment = new ForumFragment();
                 forumFragment.setSport(sport);
+                forumFragment.setForum(FitnessDatabase.getInstance(getContext()).forumDao().findForum(sport.getName()));
                 fragmentTransaction.replace(R.id.fragment_container, forumFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
