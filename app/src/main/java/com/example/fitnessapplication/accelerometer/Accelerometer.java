@@ -1,4 +1,4 @@
-package com.example.fitnessapplication;
+package com.example.fitnessapplication.accelerometer;
 
 public class Accelerometer {
     private int stepsNumber;

@@ -1,17 +1,16 @@
-package com.example.fitnessapplication;
+package com.example.fitnessapplication.workouts;
 
 import com.example.fitnessapplication.database.LoggedInUser;
-import com.example.fitnessapplication.fragment.StepCounterFragment;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class RunningWorkout implements WorkoutInterface {
+public class WalkWorkout implements WorkoutInterface {
 
     private int steps;
     private int caloriesPerKm;
 
-    public RunningWorkout(int steps, int caloriesPerKm) {
+    public WalkWorkout(int steps, int caloriesPerKm){
         this.steps = steps;
         this.caloriesPerKm = caloriesPerKm;
     }
@@ -45,6 +44,7 @@ public class RunningWorkout implements WorkoutInterface {
 
     @Override
     public int calculateSpeed() {
-        return 27;
+        //speed = km / time;
+        return 40;
     }
 }

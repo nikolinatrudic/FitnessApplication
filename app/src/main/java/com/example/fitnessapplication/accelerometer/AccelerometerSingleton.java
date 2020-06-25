@@ -1,7 +1,4 @@
-package com.example.fitnessapplication;
-
-import com.example.fitnessapplication.database.LoggedInUser;
-import com.example.fitnessapplication.database.entities.User;
+package com.example.fitnessapplication.accelerometer;
 
 public class AccelerometerSingleton {
 
