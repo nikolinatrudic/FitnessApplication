@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fitnessapplication.R;
+import com.example.fitnessapplication.database.FitnessDatabase;
+import com.example.fitnessapplication.database.dao.ForumDao;
 import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 
@@ -41,11 +44,6 @@ public class SportPage extends Fragment {
         }
     }
 
-    public void setForum(Forum forum) {
-        if (forum != null) {
-            this.forum = forum;
-        }
-    }
 
 
     @Override
@@ -98,6 +96,10 @@ public class SportPage extends Fragment {
 
                 ForumFragment forumFragment = new ForumFragment();
                 forumFragment.setSport(sport);
+
+                ForumDao forumDao = FitnessDatabase.getInstance(getContext()).forumDao();
+                forum = forumDao.findForum(sport.getName()+"");
+                Log.e("MSf", forum.getName()+"");
                 forumFragment.setForum(forum);
                 fragmentTransaction.replace(R.id.fragment_container, forumFragment);
                 fragmentTransaction.addToBackStack(null);

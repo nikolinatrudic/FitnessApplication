@@ -19,7 +19,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.fitnessapplication.database.dao.ForumDao;
 import com.example.fitnessapplication.database.dao.SportDao;
+import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 import com.example.fitnessapplication.fragment.ForumFragment;
 import com.example.fitnessapplication.menu.DrawerLocker;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sportDao=FitnessDatabase.getInstance(getApplicationContext()).sportDao();
+        ForumDao forumDao = FitnessDatabase.getInstance(getApplicationContext()).forumDao();
+        List<Forum> forums = forumDao.getForums();
         List<Sport> sports= sportDao.getSports();
         if(sports.size()==0){
             Sport run=new Sport("Run",500);
@@ -59,6 +63,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sportDao.insertSport(skate);
             sportDao.insertSport(ski);
             sportDao.insertSport(climb);
+
+
+
+
+        }
+        if(forums.size()==0){
+            Forum runf = new Forum("Run");
+            Forum skatef = new Forum("Skate");
+            Forum skif = new Forum("Ski");
+            Forum climbf = new Forum("Climb");
+            forumDao.insertForum(runf);
+            forumDao.insertForum(skatef);
+            forumDao.insertForum(skif);
+            forumDao.insertForum(climbf);
         }
         frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
 

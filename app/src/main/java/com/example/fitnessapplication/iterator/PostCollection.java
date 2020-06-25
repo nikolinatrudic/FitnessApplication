@@ -26,6 +26,7 @@ public class PostCollection {
     }
 
     public ListIterator createIterator() {
+
         return new ListIterator(posts);
     }
 

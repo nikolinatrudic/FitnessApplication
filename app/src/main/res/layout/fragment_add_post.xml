@@ -21,8 +21,10 @@
 
     <EditText
         android:id="@+id/textAreaNewPost"
-        android:layout_width="416dp"
-        android:layout_height="465dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:background="@null"
         android:gravity="top|left"
         android:hint="@string/new_post"

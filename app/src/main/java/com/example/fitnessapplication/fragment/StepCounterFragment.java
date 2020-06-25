@@ -191,22 +191,7 @@ public class StepCounterFragment extends Fragment {
         runBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Forum forumRun = new Forum("Forum run");
-                FitnessDatabase.getInstance(getContext()).forumDao().insertForum(forumRun);
-                Sport sportRun = new Sport("Run", 50);
-                sportRun.setForumId(forumRun.getForumId());
-                FitnessDatabase.getInstance(getContext()).sportDao().insertSport(sportRun);
-               // openSport("Run");
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                SportPage sportPageFragmet = new SportPage();
-                SportDao sportDao= FitnessDatabase.getInstance(getContext()).sportDao();
-                Log.d("Sport name",sportRun.getName());
-                sportPageFragmet.setSport(sportRun);
-                sportPageFragmet.setForum(forumRun);
-                fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                openSport("Run");
 
             }
         });
@@ -238,11 +223,15 @@ public class StepCounterFragment extends Fragment {
     private void openSport(String sport){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         SportPage sportPageFragmet = new SportPage();
+
         SportDao sportDao= FitnessDatabase.getInstance(getContext()).sportDao();
         Sport spor=sportDao.findSport(sport);
         Log.d("Sport name",spor.getName());
         sportPageFragmet.setSport(spor);
+
+
         fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

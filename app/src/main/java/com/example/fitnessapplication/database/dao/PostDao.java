@@ -16,4 +16,7 @@ public interface PostDao {
 
     @Query("SELECT * from post")
     List<Post> getAllPosts();
+
+    @Query("SELECT * from post p where p.forumId like :forumId1")
+    List<Post> getForumPosts(int forumId1);
 }

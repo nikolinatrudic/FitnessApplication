@@ -1,6 +1,7 @@
 package com.example.fitnessapplication.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fitnessapplication.R;
 import com.example.fitnessapplication.database.FitnessDatabase;
@@ -27,7 +30,12 @@ public class AddPostFragment extends Fragment {
     private Forum forum;
     private Sport sport;
     private User user;
+    public AddPostFragment(User user, Forum forum, Sport sport){
+        this.sport = sport;
+        this.forum = forum;
+        this.user = user;
 
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +55,12 @@ public class AddPostFragment extends Fragment {
             public void onClick(View v) {
                 Post newPost = new Post();
                 newPost.setUserId(user.getId());
+                Log.e("msg",forum.getForumId()+"");
                 newPost.setForumId(forum.getForumId());
                 newPost.setText(textArea.getText().toString());
                 newPost.setHeading(editTextHeading.getText().toString());
                 FitnessDatabase.getInstance(getContext()).postDao().insertPost(newPost);
+
 
             }
         });

@@ -58,10 +58,10 @@ public class ForumFragment extends Fragment {
         adapter = new PostAdapter(getContext(), 0);
         itemPosts = new ArrayList<>();
 
-        textViewTitle.setText("     FORUM - " + sport.getName());
+        textViewTitle.setText("Forum for " + sport.getName());
 
         //List<Post> postsList = FitnessDatabase.getInstance(getContext()).postDao().getAllPosts();
-        PostCollection postCollection = new PostCollection(FitnessDatabase.getInstance(getContext()).postDao().getAllPosts());
+        PostCollection postCollection = new PostCollection(FitnessDatabase.getInstance(getContext()).postDao().getForumPosts(forum.getForumId()));
         Log.e("msg", "Number of posts: " + postCollection.getPosts().size());
 
         //adapter.setItems(postCollection.getPosts());
@@ -86,10 +86,8 @@ public class ForumFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                AddPostFragment addPostFragment = new AddPostFragment();
-                addPostFragment.setForum(forum);
-                addPostFragment.setSport(sport);
-                addPostFragment.setUser(activeUser);
+                AddPostFragment addPostFragment = new AddPostFragment(activeUser,forum, sport);
+
                 fragmentTransaction.replace(R.id.fragment_container, addPostFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
