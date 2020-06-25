@@ -174,7 +174,7 @@ public class ProfileFragment extends Fragment {
         StringBuilder builder=new StringBuilder();
         for (Workout w:listWorkout) {
             Sport sport=sportDao.findSportId(w.getSportId());
-            builder.append("Sport: "+ sport.getName() + ", km: "+w.getKm()+". calories: "+ sport.getCaloriesPerKm()+"\n");
+            builder.append("Sport: "+ sport.getName() + ", km: "+w.getKm()+". calories: "+ w.getCalories()+"\n");
         }
         String text =builder.toString();
         final boolean[] isText =new boolean[1];
