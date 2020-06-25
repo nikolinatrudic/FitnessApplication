@@ -122,7 +122,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelerometer = AccelerometerSingleton.getInstance().getAccelerometer();
-        currentStepsNumber = accelerometer.getStepsNumber();
         Log.e("msg", getArguments().getString("sportName"));
 
         return view;
@@ -172,12 +171,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         polyline1 = map1.addPolyline(poptions);
         points = new ArrayList<>();
-        points.add(currentLoc);
 
         startImage.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+                currentStepsNumber = accelerometer.getStepsNumber();
                 stepDetector = new SensorEventListener() {
                     @Override
                     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -204,23 +203,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_FINE_LOCATION);
                 }
-
-                /*fusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                // Got last known location. In some rare situations this can be null.
-                                if (location != null) {
-                                    startLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                                    map1.addMarker(new MarkerOptions()
-                                            .position(startLoc)
-                                            .title("Start location"));
-                                    map1.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16.0f));
-                                } else {
-                                    Toast.makeText(getContext(), "Location not found", Toast.LENGTH_SHORT);
-                                }
-                            }
-                        });*/
 
                 int minTime = 10000;
                 float minDistance = (float) 3;
@@ -269,22 +251,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         stopImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(points.size() >= 2) {
+                if(points.size() >= 1) {
                     locationManager.removeUpdates(locationListener);
                     sensorManager.unregisterListener(stepDetector);
                     totalStepsNumber = accelerometer.getStepsNumber();
-                    //locationStop();
-                    //int listSize = points.size();
-                    //float[] resultArray = new float[5];
-                    Log.e("msg", "trenutno: lat:" + currentLoc.latitude + " log: " + currentLoc.longitude);
-                    Log.e("msg", "size: " + points.size());
-                    //Location.distanceBetween(startLoc.latitude, startLoc.longitude, stopLoc.latitude, stopLoc.longitude, resultArray);
 
                     String sportName = getArguments().getString("sportName");
                     Log.e("msg", sportName);
-                    WorkoutInterface workout = workoutFactory.getWorkout(sportName, (float) 0);
+                    WorkoutInterface workout = workoutFactory.getWorkout(sportName, totalStepsNumber - currentStepsNumber);
                     Bundle bundle = new Bundle();
-                    bundle.putString("km", 0 + "");
+                    bundle.putString("km", workout.calculateKm() + "");
                     bundle.putString("calories", workout.countCalories() + "");
                     bundle.putString("averageSpeed", workout.calculateSpeed() + "");
 

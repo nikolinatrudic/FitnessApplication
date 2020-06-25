@@ -36,4 +36,8 @@ public class Accelerometer {
     public int getStepsNumber(){
         return stepsNumber;
     }
+
+    public void setStepsNumber(int steps){
+        stepsNumber = steps;
+    }
 }

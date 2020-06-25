@@ -52,8 +52,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Accelerometer accelerometer = new Accelerometer();
         AccelerometerSingleton.getInstance().setAccelerometer(accelerometer);
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        String steps = sharedPreferences.getString("stepsNumber", String.valueOf(0));
+        accelerometer.setStepsNumber(Integer.parseInt(steps));
+
+
         sportDao=FitnessDatabase.getInstance(getApplicationContext()).sportDao();
         ForumDao forumDao = FitnessDatabase.getInstance(getApplicationContext()).forumDao();
         List<Forum> forums = forumDao.getForums();

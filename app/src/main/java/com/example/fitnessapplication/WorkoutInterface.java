@@ -5,4 +5,6 @@ public interface WorkoutInterface {
     int countCalories();
 
     int calculateSpeed();
+
+    float calculateKm();
 }
