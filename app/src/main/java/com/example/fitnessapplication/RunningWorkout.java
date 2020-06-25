@@ -9,14 +9,16 @@ import java.text.DecimalFormat;
 public class RunningWorkout implements WorkoutInterface {
 
     private int steps;
+    private int caloriesPerKm;
 
-    public RunningWorkout(int steps) {
+    public RunningWorkout(int steps, int caloriesPerKm) {
         this.steps = steps;
+        this.caloriesPerKm = caloriesPerKm;
     }
 
     @Override
     public float countCalories() {
-        float calories = (float) (steps * 0.07);
+        float calories = (float) (calculateKm() * caloriesPerKm);
         return calories;
     }
 
