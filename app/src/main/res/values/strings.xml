@@ -20,4 +20,6 @@
     <string name="post2">Post</string>
     <string name="heading">Heading</string>
     <string name="user">User</string>
+    <string name="choose_forum">Choose forum</string>
+    <string name="forum_name">Forum name</string>
 </resources>

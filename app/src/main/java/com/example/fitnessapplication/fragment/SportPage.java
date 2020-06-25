@@ -1,27 +1,18 @@
 package com.example.fitnessapplication.fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fitnessapplication.R;
-import com.example.fitnessapplication.database.FitnessDatabase;
-import com.example.fitnessapplication.database.dao.ForumDao;
-import com.example.fitnessapplication.database.entities.Forum;
 import com.example.fitnessapplication.database.entities.Sport;
 
 import org.w3c.dom.Text;
@@ -38,11 +29,9 @@ public class SportPage extends Fragment {
     private Button startWorkoutBtn;
     private Button forumBtn;
 
+    private int previousStepsNumber;
+
     private Sport sport;
-    private Forum forum;
-
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 44;
-
     public SportPage() {
         // Required empty public constructor
     }
@@ -51,8 +40,6 @@ public class SportPage extends Fragment {
             this.sport = sport;
         }
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,22 +61,35 @@ public class SportPage extends Fragment {
 
         sportName.setText(sport.getName());
         //todo: get from the database all the data
-        kmTxt.setText("0");
-        //caloriesTxt.setText("0");
-        avgSpeedTxt.setText("0");
-        caloriesTxt.setText(sport.getCaloriesPerKm()+" ");
+        if(getArguments() != null){
+            kmTxt.setText(getArguments().getString("km"));
+            //caloriesTxt.setText("0");
+            avgSpeedTxt.setText(getArguments().getString("averageSpeed"));
+            caloriesTxt.setText(getArguments().getString("calories"));
+        } else {
+            kmTxt.setText("0");
+            //caloriesTxt.setText("0");
+            avgSpeedTxt.setText("0");
+            caloriesTxt.setText(sport.getCaloriesPerKm() + " ");
+        }
 
         startWorkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
 
-                    return;
-                }
-               openMaps();
+                MapsFragment mapsFragment = new MapsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("sportName", sport.getName());
+                mapsFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.replace(R.id.fragment_container, mapsFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
             }
         });
 
@@ -101,41 +101,11 @@ public class SportPage extends Fragment {
 
                 ForumFragment forumFragment = new ForumFragment();
                 forumFragment.setSport(sport);
-
-                ForumDao forumDao = FitnessDatabase.getInstance(getContext()).forumDao();
-                forum = forumDao.findForum(sport.getName()+"");
-                Log.e("MSf", forum.getName()+"");
-                forumFragment.setForum(forum);
                 fragmentTransaction.replace(R.id.fragment_container, forumFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
         return view;
-    }
-    private void openMaps(){
-        MapsFragment mapsFragment = new MapsFragment();
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.fragment_container, mapsFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openMaps();
-            } else {
-                Toast.makeText(getActivity(),
-                        "Location Permission Denied",
-                        Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
     }
 }

@@ -229,7 +229,6 @@ public class StepCounterFragment extends Fragment {
         Log.d("Sport name",spor.getName());
         sportPageFragmet.setSport(spor);
 
-
         fragmentTransaction.replace(R.id.fragment_container, sportPageFragmet);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
