@@ -19,6 +19,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.fitnessapplication.Accelerometer;
+import com.example.fitnessapplication.AccelerometerSingleton;
 import com.example.fitnessapplication.database.dao.ForumDao;
 import com.example.fitnessapplication.database.dao.SportDao;
 import com.example.fitnessapplication.database.entities.Forum;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Accelerometer accelerometer = new Accelerometer();
+        AccelerometerSingleton.getInstance().setAccelerometer(accelerometer);
         sportDao=FitnessDatabase.getInstance(getApplicationContext()).sportDao();
         ForumDao forumDao = FitnessDatabase.getInstance(getApplicationContext()).forumDao();
         List<Forum> forums = forumDao.getForums();

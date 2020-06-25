@@ -24,7 +24,7 @@ public class StartPageFragment extends Fragment {
 
     private Button loginButton;
     private Button signupButton;
-    private ImageView picture;
+    private Button guest;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -54,6 +54,7 @@ public class StartPageFragment extends Fragment {
 
         loginButton = (Button) view.findViewById(R.id.loginButton);
         signupButton = (Button) view.findViewById(R.id.signupButton);
+        guest = (Button) view.findViewById(R.id.guestBtn);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,8 +79,7 @@ public class StartPageFragment extends Fragment {
                 }
         });
 
-        picture = (ImageView) view.findViewById(R.id.imageViewLogo);
-        picture.setOnClickListener(new View.OnClickListener() {
+        guest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     StepCounterFragment startPageFragment = new StepCounterFragment("guest");
